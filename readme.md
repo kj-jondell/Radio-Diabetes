@@ -1,7 +1,7 @@
 (*Dokument uppdaterat:* \today)
 
 # Struktur av system
-![Flödesdiagram av system](../media/flowchart.png)
+![Flödesdiagram av system](media/flowchart.png)
 
 - **Hemsida** (interaktion med användarna -- dvs. uppladdning av mätdata som Excel-fil -- *och* spelar upp musiken; uppbyggd av **Flask** och kopplas på så sätt ihop med Python-server) 
 - **Python-server** (tar emot användar-data, tolkar data och servrar) 
@@ -39,15 +39,15 @@ Det som är viktigt i denna *mappning* är dock att den gestaltade datan -- dvs.
 
 Följande är en plott av interpolerad data från en dag (m.h.a. en BSpline):
 
-![Interpolation](../media/data/interpolated.png)
+![Interpolation](media/data/interpolated.png)
 
 ## Bearbetning
 
 Här är några exempel på bearbetad data:
 
-![Första ordningen differentiering](../media/data/1st-order.png)
+![Första ordningen differentiering](media/data/1st-order.png)
 
-![Femte ordningen differentiering](../media/data/5st-order.png)
+![Femte ordningen differentiering](media/data/5st-order.png)
 
 ## Integritet, delning osv.
 
