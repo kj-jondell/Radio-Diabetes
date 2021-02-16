@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div>
+        <audio src="http://{{ request.host.split(':')[0] }}:8000/listen" controls preload></audio>
+    </div>
+{% endblock %}
