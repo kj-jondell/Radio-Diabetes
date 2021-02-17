@@ -1,3 +1,6 @@
+// Quarks.install(File.getcwd +/+ "classes"); // needs to be recompiled...
+// thisProcess.recompile;
+
 var dataPackets = List.new();
 var newDataPack;
 

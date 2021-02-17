@@ -5,7 +5,7 @@ BloodGlucose {
 	*	- scale: a Scale defining scale that will be played by this object
 	*	- soundSource: a Symbol containing name of SynthDef associated to this object
 	*/
-	var <>register, <>key, <>scale, <>position, <>soundSource, <>metaData;
+	var <>register, <>key, <>scale, <>position, <>soundSource, <>metaData, <>anotherOne;
 	classvar values, index, rawPattern, differentiatedPattern;
 
     *new {
