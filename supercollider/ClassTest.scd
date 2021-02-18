@@ -20,7 +20,8 @@ thisProcess.recompile;
 
 	});
 )
-Server.default.queryAllNodes
+
+Server.default.queryAllNodes;
 p = Pbind(\degree, Pwhite(0, 7, inf), \dur, 0.25, \legato, 1).asStream;
 p.next(())
 
@@ -37,3 +38,5 @@ Pbind(
 
 SimpleNumber.new 
 2.1.clip(1.5,2)
+
+s.meter
