@@ -5,7 +5,7 @@ BloodGlucose {
 	*	- scale: a Scale defining scale that will be played by this object
 	*	- soundSource: a Symbol containing name of SynthDef associated to this object
 	*/
-	var <>register, <>key, <>scale, <>position, <>soundSource, <>metaData, <>anotherOne;
+	var <>register, <>key, <>scale, <>position, <>soundSource, <>metaData;
 	classvar values, index, rawPattern, differentiatedPattern;
 
     *new {
@@ -49,6 +49,14 @@ BloodGlucose {
 		arg repeats = 4;
 		rawPattern = Pseq.new(values, repeats);
 		differentiatedPattern = Pseq.new(this.prGetDifferentiated(values, order: 3, scale: 10), repeats);
+	}
+
+	play {
+		 Pbind.new(
+			 \instrument, \sin,
+		 	\degree, rawPattern,
+			\dur, Prand.new([1/3, 1/5, 1/7], 30) 
+		 ).play;
 	}
 
 	printOn {
