@@ -1,4 +1,4 @@
-// Quarks.install(File.getcwd +/+ "classes"); // needs to be recompiled...
+// Quarks.install(File.getcwd +/+ "classes"); // needs to be recompiled..., only needs to be added once...
 // thisProcess.recompile;
 
 var dataPackets = List.new();
@@ -25,6 +25,8 @@ var oscFunc = {
 // ---------- SERVER SETTINGS ---------- 
 var server, serverOptions = ServerOptions.new;
 
+var SERVER_PORT = 58009;
+
 /* TODO ta bort hjälp-synthDef */
 SynthDef.new(\sin,  {
 	arg freq;
@@ -38,7 +40,7 @@ serverOptions.numInputBusChannels = 0;
 "SC_JACK_DEFAULT_INPUTS".setenv();
 "SC_JACK_DEFAULT_OUTPUTS".setenv("darkice-piano"); //TODO change name of darkice-jack node
 
-server = Server.new(\diabetesServer,  NetAddr("localhost", 58009),  options: serverOptions); // non-standard server port!
+server = Server.new(\diabetesServer,  NetAddr("localhost", SERVER_PORT),  options: serverOptions); // non-standard server port!
 
 SynthDescLib.global.addServer(server);
 thisProcess.addOSCRecvFunc(oscFunc);
