@@ -58,9 +58,11 @@ BloodGlucose {
 		 Pbind.new(
 			 \instrument, \sliceBuffer,
 			 \bufnum, Prand.new([1,2,3,4,5,6,7,8,9], 30),
-		 	\degree, rawPattern,
-			\octave, 2,
-			\dur, Prand.new([1/4], 30) 
+		 	\degree, Pfunc.new({values.choose.round()}),
+			\octave, 1,
+			\pan, Pwhite.new(-1.0,  hi: 1.0,  length: inf),
+			\scale, Scale.majorPentatonic,
+			\dur, Pwrand.new([1/4, 1/8], [10, 1].normalizeSum, 30) 
 		 ).play(quant: 1);
 	}
 

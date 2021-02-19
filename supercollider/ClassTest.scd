@@ -11,15 +11,21 @@ thisProcess.recompile;
 
 Server.killAll
 (
+s.boot;
+Buffer.freeAll;
+	)
+(
 	Require("defs/SynthDefs"); //loading synthdefs...
+	////////// LOAD BUFFERS \\\\\\\\\\
+	~slices = SoundFile.collectIntoBuffers(File.getcwd +/+ "defs/media/normalized/*",  server: Server.default);
+)
+(
 	Server.default.waitForBoot({
 		var glucoseObject = BloodGlucose.new();
-		var randValues, slices;
+		var randValues;
 
 		randValues = Array.fill(100, {arg i; 2.0+28.0.rand;});
 
-		////////// LOAD BUFFERS \\\\\\\\\\
-		slices = SoundFile.collectIntoBuffers(File.getcwd +/+ "defs/media/normalized/*",  server: Server.default);
 
 		// Server.default.sync;
 
@@ -31,9 +37,6 @@ Server.killAll
 
 		glucoseObject.createPatterns();
 		glucoseObject.play();
-
-		Synth.new(\sin);
-
 	});
 )
 
