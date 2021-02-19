@@ -1,5 +1,12 @@
 // Quarks.install(File.getcwd +/+ "classes"); // needs to be recompiled..., only needs to be added once...
+// Quarks.clear
 // thisProcess.recompile;
+(
+    LanguageConfig.addIncludePath(File.getcwd +/+ "/classes");
+    LanguageConfig.store(File.getcwd +/+ "sclang_conf.yaml");
+)
+
+
 
 var dataPackets = List.new();
 var newDataPack;

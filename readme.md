@@ -39,15 +39,15 @@ Det som är viktigt i denna *mappning* är dock att den gestaltade datan -- dvs.
 
 Följande är en plott av interpolerad data från en dag (m.h.a. en BSpline):
 
-![Interpolation](media/data/interpolated.png)
+![Interpolation](../media/data/interpolated.png)
 
 ## Bearbetning
 
 Här är några exempel på bearbetad data:
 
-![Första ordningen differentiering](media/data/1st-order.png)
+![Första ordningen differentiering](../media/data/1st-order.png)
 
-![Femte ordningen differentiering](media/data/5st-order.png)
+![Femte ordningen differentiering](../media/data/5st-order.png)
 
 ## Integritet, delning osv.
 
