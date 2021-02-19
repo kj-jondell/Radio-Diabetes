@@ -55,6 +55,8 @@ BloodGlucose {
 		rawPattern = Pseq.new(values, repeats);
 		differentiatedPattern = Pseq.new(differentiated, repeats);
 
+		values.postln;
+		differentiated.postln;
 		[values.mean,values.maxItem,values.minItem,values.stdDev,values.variance,values.geoMean,values.autocorr,values.corr(randValues2)].postln;
 
 		//differentiated.plot();

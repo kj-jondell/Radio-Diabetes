@@ -21,15 +21,15 @@ Server.killAll
 (
 	Server.default.waitForBoot({
 		var glucoseObject = BloodGlucose.new();
-		var randValues;
+		var randValues, randValues2;
 
 		randValues = Array.fill(100, {arg i; 2.0+28.0.rand;});
+		randValues2 = Array.fill(100, {arg i; 2.0+28.0.rand;});
 
-		randValues.mean.postln;
-		randValues.maxItem.postln;
-		randValues.minItem.postln;
-		randValues.stdDev.postln;
-
+		[randValues.mean,randValues.maxItem,randValues.minItem,randValues.stdDev,randValues.variance,randValues.geoMean,randValues.autocorr,randValues.corr(randValues2)].do({
+			arg value;
+			value.postln;
+		});
 		// Server.default.sync;
 
 		////////// LOAD OBJECT \\\\\\\\\\
