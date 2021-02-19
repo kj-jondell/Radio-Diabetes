@@ -1,13 +1,10 @@
 // Quarks.install(File.getcwd +/+ "classes"); // needs to be recompiled..., only needs to be added once...
 // Quarks.clear
 // thisProcess.recompile;
-(
-    LanguageConfig.addIncludePath(File.getcwd +/+ "/classes");
-    LanguageConfig.store(File.getcwd +/+ "sclang_conf.yaml");
-)
-
-
-
+// (
+//     LanguageConfig.addIncludePath(File.getcwd +/+ "/classes");
+//     LanguageConfig.store(File.getcwd +/+ "sclang_conf.yaml");
+// )
 var dataPackets = List.new();
 var newDataPack;
 
@@ -32,7 +29,7 @@ var oscFunc = {
 // ---------- SERVER SETTINGS ---------- 
 var server, serverOptions = ServerOptions.new;
 
-var SERVER_PORT = 58009;
+var serverPort = 58009;
 
 /* TODO ta bort hjälp-synthDef */
 SynthDef.new(\sin,  {
@@ -47,7 +44,7 @@ serverOptions.numInputBusChannels = 0;
 "SC_JACK_DEFAULT_INPUTS".setenv();
 "SC_JACK_DEFAULT_OUTPUTS".setenv("darkice-piano"); //TODO change name of darkice-jack node
 
-server = Server.new(\diabetesServer,  NetAddr("localhost", SERVER_PORT),  options: serverOptions); // non-standard server port!
+server = Server.new(\diabetesServer,  NetAddr("localhost", serverPort),  options: serverOptions); // non-standard server port!
 
 SynthDescLib.global.addServer(server);
 thisProcess.addOSCRecvFunc(oscFunc);

@@ -3,7 +3,7 @@ Quarks.uninstall(File.getcwd +/+ "classes");
 Quarks.clear;
 thisProcess.recompile;
 
-s.reboot
+s.reboot;
 (
 	Server.default.waitForBoot({
 		var glucoseObject = BloodGlucose.new();
@@ -48,7 +48,7 @@ thisProcess.recompile;
 SynthDef.new(\sin, {
 	arg freq = 110;
 	var left = SinOsc.ar(freq,  phase: 0.0, mul: 0.1,  add: 0.0),
-	right=left;//right = SinOsc.ar(freq,  phase: pi*2.0.rand, mul: 0.1,  add: 0.0);
+	right = SinOsc.ar(freq,  phase: pi*2.0.rand, mul: 0.1,  add: 0.0);
 	var env = EnvGen.kr(Env.perc,  gate: 1.0,  levelScale: 1.0,  levelBias: 0.0,  timeScale: 1.0,  doneAction: Done.freeSelf);
 	Out.ar(0, [left, right]*env);
 }).add;
