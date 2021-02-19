@@ -51,6 +51,9 @@ BloodGlucose {
 		differentiatedPattern = Pseq.new(this.prGetDifferentiated(values, order: 3, scale: 10), repeats);
 	}
 
+	/*
+	* TODO: change the content of this Pbind...
+	*/
 	play {
 		 Pbind.new(
 			 \instrument, \sin,
