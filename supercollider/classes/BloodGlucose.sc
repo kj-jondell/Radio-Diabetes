@@ -56,7 +56,8 @@ BloodGlucose {
 	*/
 	play {
 		 Pbind.new(
-			 \instrument, \sin,
+			 \instrument, \sliceBuffer,
+			 \bufnum, Prand.new([1,2,3,4,5,6,7,8,9], 30),
 		 	\degree, rawPattern,
 			\octave, 2,
 			\dur, Prand.new([1/4], 30) 

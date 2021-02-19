@@ -1,16 +1,29 @@
 Quarks.install("Require");
+Quarks.openFolder
 thisProcess.recompile;
 
-Require("defs/SynthDefs"); //loading synthdefs...
+Quarks.install(File.getcwd +/+ "classes");
 
-s.reboot;
+
+s.boot;
+
+thisProcess.recompile;
+
+Server.killAll
 (
+	Require("defs/SynthDefs"); //loading synthdefs...
 	Server.default.waitForBoot({
 		var glucoseObject = BloodGlucose.new();
-		var randValues;
+		var randValues, slices;
 
 		randValues = Array.fill(100, {arg i; 2.0+28.0.rand;});
 
+		////////// LOAD BUFFERS \\\\\\\\\\
+		slices = SoundFile.collectIntoBuffers(File.getcwd +/+ "defs/media/normalized/*",  server: Server.default);
+
+		// Server.default.sync;
+
+		////////// LOAD OBJECT \\\\\\\\\\
 		randValues.do({
 			arg value, i;
 			glucoseObject.addValue(value);
@@ -18,6 +31,8 @@ s.reboot;
 
 		glucoseObject.createPatterns();
 		glucoseObject.play();
+
+		Synth.new(\sin);
 
 	});
 )
