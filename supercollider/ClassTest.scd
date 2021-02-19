@@ -1,7 +1,7 @@
-Quarks.install(File.getcwd +/+ "classes");
-Quarks.uninstall(File.getcwd +/+ "classes");
-Quarks.clear;
+Quarks.install("Require");
 thisProcess.recompile;
+
+Require("defs/SynthDefs"); //loading synthdefs...
 
 s.reboot;
 (
