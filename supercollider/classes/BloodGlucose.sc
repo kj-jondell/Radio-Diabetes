@@ -55,9 +55,13 @@ BloodGlucose {
 		rawPattern = Pseq.new(values, repeats);
 		differentiatedPattern = Pseq.new(differentiated, repeats);
 
-		values.postln;
-		differentiated.postln;
-		[values.mean,values.maxItem,values.minItem,values.stdDev,values.variance,values.geoMean,values.autocorr,values.corr(randValues2)].postln;
+		//values.postln;
+		//differentiated.postln;
+        values.stdDev;
+		[values.mean,values.maxItem,values.minItem,values.stdDev,values.variance,values.geoMean,values.autocorr].do({
+            arg value;
+            value.postln;
+        });
 
 		//differentiated.plot();
 	}
@@ -67,11 +71,11 @@ BloodGlucose {
 	*/
 	play {
 		 Pbind.new(
-			\instrument, \sliceBuffer,
-			\bufnum, Prand.new([1,2,3,4,5,6,7,8,9], 30),
+//			\instrument, \sliceBuffer,
+//			\bufnum, Prand.new([1,2,3,4,5,6,7,8,9], 30),
 		 	\degree, Pfunc.new({values.choose.round()}),
 			\octave, 1,
-			\pan, differentiatedPattern,
+			//\pan, differentiatedPattern,
 			\scale, Scale.majorPentatonic,
 			\dur, Pwrand.new([1/4, 1/8], [10, 1].normalizeSum, 30) 
 		 ).play(quant: 1);

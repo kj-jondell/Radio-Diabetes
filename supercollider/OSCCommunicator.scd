@@ -17,11 +17,13 @@ var oscFunc = {
 		'/value', {newDataPack.addValue(msg[1]);},
 		'/meta', {
 		  newDataPack.metaData = Dictionary.newFrom(msg[1..]);
-		  newDataPack.metaData.postln;
+		  //newDataPack.metaData.postln;
 		},
 		'/valueDone', {
 		  newDataPack.createPatterns();
+          newDataPack.play();
 		  dataPackets.add(newDataPack);
+          Synth.new(\sin, [\freq, 220]);
 		}
 	);
 
@@ -49,4 +51,20 @@ server = Server.new(\diabetesServer,  NetAddr("localhost", serverPort),  options
 SynthDescLib.global.addServer(server);
 thisProcess.addOSCRecvFunc(oscFunc);
 
-server.boot;
+Require("defs/SynthDefs");
+server.waitForBoot({
+    SoundFile.collectIntoBuffers(File.getcwd +/+ "defs/media/normalized/*",  server: server);
+
+    server.sync;
+
+    2.do({
+        arg i;
+        Synth.new(\sliceBuffer, [\freq, 220]);
+        Synth.new(\sin, [\freq, 220]);
+        1.wait;
+    });
+
+    server.status;
+    "Done!".postln;
+});
+
