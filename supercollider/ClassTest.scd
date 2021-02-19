@@ -1,23 +1,22 @@
+Quarks.install("MathLib");
 Quarks.install("Require");
 Quarks.openFolder
 thisProcess.recompile;
 
 Quarks.install(File.getcwd +/+ "classes");
-
-
 s.boot;
 
 thisProcess.recompile;
 
 Server.killAll
 (
-s.boot;
-Buffer.freeAll;
-	)
+	s.reboot;
+	Buffer.freeAll;
+)
 (
 	Require("defs/SynthDefs"); //loading synthdefs...
 	////////// LOAD BUFFERS \\\\\\\\\\
-	~slices = SoundFile.collectIntoBuffers(File.getcwd +/+ "defs/media/normalized/*",  server: Server.default);
+	SoundFile.collectIntoBuffers(File.getcwd +/+ "defs/media/normalized/*",  server: Server.default);
 )
 (
 	Server.default.waitForBoot({
@@ -26,6 +25,10 @@ Buffer.freeAll;
 
 		randValues = Array.fill(100, {arg i; 2.0+28.0.rand;});
 
+		randValues.mean.postln;
+		randValues.maxItem.postln;
+		randValues.minItem.postln;
+		randValues.stdDev.postln;
 
 		// Server.default.sync;
 
@@ -37,37 +40,30 @@ Buffer.freeAll;
 
 		glucoseObject.createPatterns();
 		glucoseObject.play();
+
+		//s.meter;
 	});
 )
 
-Server.default.queryAllNodes;
-p = Pbind(\degree, Pwhite(0, 7, inf), \dur, 0.25, \legato, 1).asStream;
-p.next(())
+[1,2,3].harmMean
+[1,2,3].geoMean
+[1,2,3].stdDev
+[1,2,3].stdDevPop
+[1,2,3].percentile(0.25)
+[1,3,5].percentile([0.25, 0.75])
+[1,2,4].variancePop
+([3,0,3,1,1,1,1,2,3].histo(3)-1).plot
+[0,1,2,-1,1,2,3,4].autocorr
+[0,0,0].corr([3,1,1,2,2,3][1..3])
 
-Pbind(\freq, Prand([300, 500, 231.2, 399.2], inf), \dur, 0.1).play;
 
-(
-Pbind(
-    \curve, Pseg(Pseq([0, 1, 0], 1), 15),
-    \degree, Pwhite(-7, 0, inf) + Pkey(\curve).linlin(0, 1, 0, 14).asInteger,
-    \dur, 0.5,
-    \tempo, Pkey(\curve).linlin(0, 1, 1, 10)
-).play;
-)
-
-SimpleNumber.new 
-2.1.clip(1.5,2)
-
-s.scope;
-s.meter
-
-thisProcess.recompile;
-(
-SynthDef.new(\sin, {
-	arg freq = 110;
-	var left = SinOsc.ar(freq,  phase: 0.0, mul: 0.1,  add: 0.0),
-	right = SinOsc.ar(freq,  phase: pi*2.0.rand, mul: 0.1,  add: 0.0);
-	var env = EnvGen.kr(Env.perc,  gate: 1.0,  levelScale: 1.0,  levelBias: 0.0,  timeScale: 1.0,  doneAction: Done.freeSelf);
-	Out.ar(0, [left, right]*env);
-}).add;
-)
+// TODO ta bort om inte behövs...
+// (
+// SynthDef.new(\sin, {
+// 	arg freq = 110;
+// 	var left = SinOsc.ar(freq,  phase: 0.0, mul: 0.1,  add: 0.0),
+// 	right = SinOsc.ar(freq,  phase: pi*2.0.rand, mul: 0.1,  add: 0.0);
+// 	var env = EnvGen.kr(Env.perc,  gate: 1.0,  levelScale: 1.0,  levelBias: 0.0,  timeScale: 1.0,  doneAction: Done.freeSelf);
+// 	Out.ar(0, [left, right]*env);
+// }).add;
+// )
