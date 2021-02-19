@@ -51,12 +51,16 @@ BloodGlucose {
 		differentiatedPattern = Pseq.new(this.prGetDifferentiated(values, order: 3, scale: 10), repeats);
 	}
 
+	/*
+	* TODO: change the content of this Pbind...
+	*/
 	play {
 		 Pbind.new(
 			 \instrument, \sin,
 		 	\degree, rawPattern,
-			\dur, Prand.new([1/3, 1/5, 1/7], 30) 
-		 ).play;
+			\octave, 2,
+			\dur, Prand.new([1/4], 30) 
+		 ).play(quant: 1);
 	}
 
 	printOn {
