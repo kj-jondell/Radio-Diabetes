@@ -23,7 +23,6 @@ var oscFunc = {
 		  newDataPack.createPatterns();
           newDataPack.play();
 		  dataPackets.add(newDataPack);
-          Synth.new(\sin, [\freq, 220]);
 		}
 	);
 
@@ -57,14 +56,6 @@ server.waitForBoot({
 
     server.sync;
 
-    2.do({
-        arg i;
-        Synth.new(\sliceBuffer, [\freq, 220]);
-        Synth.new(\sin, [\freq, 220]);
-        1.wait;
-    });
-
-    server.status;
     "Done!".postln;
 });
 

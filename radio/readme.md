@@ -14,6 +14,7 @@ Icecast (eller mer specifikt, *Icecast2*) körs som en service på server-maskin
 ## Darkice
 
 Darkice körs tillsammans med SuperCollider. Viktigt att jack-inställningar stämmer överens med Supercollider och port-inställningar och dylikt stämmer med Icecast.
+`darkice -c ../radio/.darkice.cfg &`
 
 # TODO
 1. Gör så radio-script körs vid Startup [ ]
