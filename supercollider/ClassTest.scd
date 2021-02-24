@@ -21,18 +21,21 @@ Server.killAll
 	////////// LOAD BUFFERS \\\\\\\\\\
 	SoundFile.collectIntoBuffers(File.getcwd +/+ "defs/media/normalized/*",  server: Server.default);
 )
+~objects.postln;
+b.postln;
+q.size;
 (
+	Require("defs/SynthDefs"); //loading synthdefs...
+b = List.new();
 	Server.default.waitForBoot({
 		var randValues, randValues2;
 		var counter = 0;
-		var glucoseObject = BloodGlucose.new(s, { //TODO flytta callback till klassen!
-			arg ...args;
-			counter = counter+1; 
-			//counter.postln;
-			if(counter==100){glucoseObject.player.xstop(10);} //håll räkning!
-			glucoseObject.player.clock;
-			
+		var objects = List.new();
+		var glucoseObject = BloodGlucose.new(s, {
+			arg argm;
+			b.remove(argm);
 		});
+		b.add(glucoseObject);
 
 		randValues = Array.fill(100, {arg i; 2.0+28.0.rand;});
 		randValues2 = Array.fill(100, {arg i; 2.0+28.0.rand;});
@@ -49,12 +52,35 @@ Server.killAll
 			glucoseObject.addValue(value);
 		});
 
+		// fork {
+		// 	loop {
+		// 		(TempoClock.default.seconds-glucoseObject.startTime).postln;
+		// 		1.wait;
+		// 	}
+		// };
+
 		glucoseObject.createPatterns();
-		glucoseObject.play();
+
+		b[0].postln;
+		TempoClock.default.sched(1,{
+			glucoseObject.play(maxTime: 6, minTime: 4, fadeIn: 1, fadeOut: 1, instrument: [/*\sliceBuffer, */\sin].choose);
+		})
 
 		//s.meter;
 	});
 )
+		b[0].postln;
+
+// Logik:
+// 1. Nytt osc-paket anländer
+// 2. Kolla om lista är full
+//	a. om listan är full, köa nytt paket
+//	b. annars lägg till i lista och starta
+// 
+
+TempoClock.default.sched(1, {"hello".postln});
+
+TempoClock.default.secs2beats(TempoClock.default.seconds);
 ~glucoseObject.player.start;
 ~glucoseObject.player.isPlaying
 
@@ -73,6 +99,7 @@ Server.killAll
 [0,0,0].corr([3,1,1,2,2,3][1..3])
 
 
+s.queryAllNodes;
 // TODO ta bort om inte behövs...
 // (
 // SynthDef.new(\sin, {

@@ -53,11 +53,6 @@ var oscFunc = {
 };
 
 /* TODO ta bort hjälp-synthDef */
-SynthDef.new(\sin,  {
-	arg freq;
-	var sinOsc = SinOsc.ar(freq, mul:0.1)*EnvGen.kr(Env.perc(), doneAction: Done.freeSelf);
-	Out.ar(0, sinOsc!2);
-}).add;
 
 serverOptions.device = "scjack:supercollider";
 serverOptions.numInputBusChannels = 0;

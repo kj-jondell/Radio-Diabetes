@@ -57,3 +57,8 @@ SynthDef.new(\gatedBuffer, {
 // 0.exit; // använd endast när script körs från terminalen
 
 
+SynthDef.new(\sin,  {
+	arg freq = 110;
+	var sinOsc = SinOsc.ar(freq, mul:0.1)*EnvGen.kr(Env.perc(), doneAction: Done.freeSelf);
+	Out.ar(0, sinOsc!2);
+}).add;

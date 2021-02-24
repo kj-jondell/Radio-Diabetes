@@ -5,16 +5,16 @@ BloodGlucose {
 	*	- scale: a Scale defining scale that will be played by this object
 	*	- soundSource: a Symbol containing name of SynthDef associated to this object
 	*/
-	var server, <>register, <>key, <>scale, <>position, <>soundSource, <>metaData, <player, <counter;
+	var server, cleanupFunction, <>register, <>key, <>scale, <>position, <>soundSource, <>metaData, <player, <startTime = 0, isCleaned = false;
 	classvar values, index, rawPattern, differentiatedPattern;
 	classvar debug = false;
 
     *new {
-		arg server_, callback_;
+		arg server_, cleanup_;
 		index = 0;
 		values = List.new();
 
-        ^super.newCopyArgs(server_, callback_);
+        ^super.newCopyArgs(server_, cleanup_);
 	}
 
 	/*
@@ -68,34 +68,48 @@ BloodGlucose {
 		}
 	}
 
+	
+
+	prCallback {
+		arg maxTime, fadeOut, minTime;
+		if(maxTime>0){
+			if(player.clock.seconds-startTime>maxTime){
+				player.xstop(fadeOut);
+				if(isCleaned == false){
+					isCleaned.postln;
+					cleanupFunction.value(this);
+					isCleaned = true;
+				};
+			} {
+				if((player.clock.seconds-startTime)>minTime){
+					"min time past".postln;
+				}
+			}
+		};
+	}
+
 	/*
 	* TODO: change the content of this Pbind...
 	*/
 	play {
-		 player = Pn( 
-			 Plazy {
-				 Pbind.new(
-					 \instrument, \sliceBuffer,
-					 \bufnum, Prand.new([1,2,3,4,5,6,7,8,9], 100),
-					 \degree, Pfunc.new({values.choose.round()}),
-					 \octave, 1,
-					 \pan, differentiatedPattern,
-					 \scale, Scale.majorPentatonic,
-					 \callback, {
-						 //arg ...args; // TODO ta bort
+		arg fadeIn = 10, maxTime = 10, minTime = 0, fadeOut = 10, instrument = \sliceBuffer;
 
-						 //counter = counter+1; 
-						 //counter.postln;
-						 //if(counter==100){glucoseObject.player.xstop(10);}; //håll räkning!
-						 //glucoseObject.player.clock.beats.postln;
-					 },
-					 \server, server, //TODO VIKTIG!!
-					 \dur, Pwrand.new([1/4, 1/8, Rest(1/4)], [6, 2, 1].normalizeSum, 10) 
-				 )
-			 }, inf)
-		 .asEventStreamPlayer.xplay(10, quant: 1);
-		 //player.repeat(inf);
-		 //player.interlace({});
+		player = Pn( 
+		    Plazy {
+		   	 Pbind.new(
+		   		 \instrument, instrument,
+		   		 \bufnum, Prand.new([1,2,3,4,5,6,7,8,9], 100),
+		   		 \degree, Pfunc.new({values.choose.round()}),
+		   		 \octave, 1,
+		   		 \pan, differentiatedPattern,
+		   		 \scale, Scale.majorPentatonic,
+		   		 \callback, {this.prCallback(maxTime, fadeOut, minTime);},
+		   		 \server, server, //TODO VIKTIG!!
+		   		 \dur, Pwrand.new([1/4, 1/8, 1/16, Rest(1/4)], [6, 2, 0.5, 1].normalizeSum, 10) 
+		   	 )
+		    }, inf)
+		.asEventStreamPlayer.xplay(fadeIn, quant: 1);
+		startTime = player.clock.seconds;
 	}
 
 	printOn {
