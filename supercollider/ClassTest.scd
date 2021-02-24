@@ -24,9 +24,9 @@ Server.killAll
 ~objects.postln;
 b.postln;
 q.size;
+b = List.new();
 (
 	Require("defs/SynthDefs"); //loading synthdefs...
-b = List.new();
 	Server.default.waitForBoot({
 		var randValues, randValues2;
 		var counter = 0;
@@ -63,11 +63,17 @@ b = List.new();
 
 		b[0].postln;
 		TempoClock.default.sched(1,{
-			glucoseObject.play(maxTime: 6, minTime: 4, fadeIn: 1, fadeOut: 1, instrument: [/*\sliceBuffer, */\sin].choose);
+			glucoseObject.play(maxTime: 100, minTime: 4, fadeIn: 1, fadeOut: 1, instrument: [\sliceBuffer, \sin].choose);
 		})
 
 		//s.meter;
 	});
+)
+(
+b.do({
+	arg val;
+	val.hasWaiting = true;
+});
 )
 		b[0].postln;
 

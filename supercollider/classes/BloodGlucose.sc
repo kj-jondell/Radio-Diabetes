@@ -5,7 +5,7 @@ BloodGlucose {
 	*	- scale: a Scale defining scale that will be played by this object
 	*	- soundSource: a Symbol containing name of SynthDef associated to this object
 	*/
-	var server, cleanupFunction, <>register, <>key, <>scale, <>position, <>soundSource, <>metaData, <player, <startTime = 0, isCleaned = false;
+	var server, cleanupFunction, <>register, <>key, <>scale, <>position, <>soundSource, <>metaData, <player, <startTime = 0, isCleaned = false, >hasWaiting = false;
 	classvar values, index, rawPattern, differentiatedPattern;
 	classvar debug = false;
 
@@ -68,21 +68,26 @@ BloodGlucose {
 		}
 	}
 
-	
+	prCleanup {
+		arg fadeOut;
+		player.xstop(fadeOut);
+		if(isCleaned == false){
+			isCleaned.postln;
+			cleanupFunction.value(this);
+			isCleaned = true;
+		};
+	}
 
 	prCallback {
 		arg maxTime, fadeOut, minTime;
 		if(maxTime>0){
 			if(player.clock.seconds-startTime>maxTime){
-				player.xstop(fadeOut);
-				if(isCleaned == false){
-					isCleaned.postln;
-					cleanupFunction.value(this);
-					isCleaned = true;
-				};
+				this.prCleanup(fadeOut);
 			} {
 				if((player.clock.seconds-startTime)>minTime){
-					"min time past".postln;
+					if (hasWaiting) {
+						this.prCleanup(fadeOut);
+					}
 				}
 			}
 		};
