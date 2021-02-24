@@ -1,5 +1,7 @@
 Quarks.install("MathLib");
 Quarks.install("Require");
+Quarks.install("JITLib");
+"JITLibExtensions".include;
 Quarks.openFolder
 thisProcess.recompile;
 
@@ -21,8 +23,16 @@ Server.killAll
 )
 (
 	Server.default.waitForBoot({
-		var glucoseObject = BloodGlucose.new();
 		var randValues, randValues2;
+		var counter = 0;
+		var glucoseObject = BloodGlucose.new(s, { //TODO flytta callback till klassen!
+			arg ...args;
+			counter = counter+1; 
+			//counter.postln;
+			if(counter==100){glucoseObject.player.xstop(10);} //håll räkning!
+			glucoseObject.player.clock;
+			
+		});
 
 		randValues = Array.fill(100, {arg i; 2.0+28.0.rand;});
 		randValues2 = Array.fill(100, {arg i; 2.0+28.0.rand;});
@@ -45,6 +55,11 @@ Server.killAll
 		//s.meter;
 	});
 )
+~glucoseObject.player.start;
+~glucoseObject.player.isPlaying
+
+
+[1,2,3].asStream.next.postln
 
 [1,2,3].harmMean
 [1,2,3].geoMean

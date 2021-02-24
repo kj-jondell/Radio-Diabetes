@@ -5,7 +5,7 @@ BloodGlucose {
 	*	- scale: a Scale defining scale that will be played by this object
 	*	- soundSource: a Symbol containing name of SynthDef associated to this object
 	*/
-	var server, callback, <>register, <>key, <>scale, <>position, <>soundSource, <>metaData;
+	var server, <>register, <>key, <>scale, <>position, <>soundSource, <>metaData, <player, <counter;
 	classvar values, index, rawPattern, differentiatedPattern;
 	classvar debug = false;
 
@@ -72,17 +72,30 @@ BloodGlucose {
 	* TODO: change the content of this Pbind...
 	*/
 	play {
-		 Pbind.new(
-			\instrument, \sliceBuffer,
-			\bufnum, Prand.new([1,2,3,4,5,6,7,8,9], 100),
-		 	\degree, Pfunc.new({values.choose.round()}),
-			\octave, 1,
-			\pan, differentiatedPattern,
-			\scale, Scale.majorPentatonic,
-			\finish, callback,
-			\server, server, //TODO VIKTIG!!
-			\dur, Pwrand.new([1/4, 1/8, Rest(1/4)], [6, 2, 1].normalizeSum, 100) 
-		 ).play(quant: 1);
+		 player = Pn( 
+			 Plazy {
+				 Pbind.new(
+					 \instrument, \sliceBuffer,
+					 \bufnum, Prand.new([1,2,3,4,5,6,7,8,9], 100),
+					 \degree, Pfunc.new({values.choose.round()}),
+					 \octave, 1,
+					 \pan, differentiatedPattern,
+					 \scale, Scale.majorPentatonic,
+					 \callback, {
+						 //arg ...args; // TODO ta bort
+
+						 //counter = counter+1; 
+						 //counter.postln;
+						 //if(counter==100){glucoseObject.player.xstop(10);}; //håll räkning!
+						 //glucoseObject.player.clock.beats.postln;
+					 },
+					 \server, server, //TODO VIKTIG!!
+					 \dur, Pwrand.new([1/4, 1/8, Rest(1/4)], [6, 2, 1].normalizeSum, 10) 
+				 )
+			 }, inf)
+		 .asEventStreamPlayer.xplay(10, quant: 1);
+		 //player.repeat(inf);
+		 //player.interlace({});
 	}
 
 	printOn {
