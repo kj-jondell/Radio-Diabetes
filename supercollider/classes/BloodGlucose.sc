@@ -5,13 +5,16 @@ BloodGlucose {
 	*	- scale: a Scale defining scale that will be played by this object
 	*	- soundSource: a Symbol containing name of SynthDef associated to this object
 	*/
-	var <>register, <>key, <>scale, <>position, <>soundSource, <>metaData;
+	var server, callback, <>register, <>key, <>scale, <>position, <>soundSource, <>metaData;
 	classvar values, index, rawPattern, differentiatedPattern;
+	classvar debug = false;
 
     *new {
+		arg server_, callback_;
 		index = 0;
 		values = List.new();
-        ^super.newCopyArgs();
+
+        ^super.newCopyArgs(server_, callback_);
 	}
 
 	/*
@@ -55,15 +58,14 @@ BloodGlucose {
 		rawPattern = Pseq.new(values, repeats);
 		differentiatedPattern = Pseq.new(differentiated, repeats);
 
-		//values.postln;
-		//differentiated.postln;
-        values.stdDev;
-		[values.mean,values.maxItem,values.minItem,values.stdDev,values.variance,values.geoMean,values.autocorr].do({
-            arg value;
-            value.postln;
-        });
+		if(debug){
+			[values.mean,values.maxItem,values.minItem,values.stdDev,values.variance,values.geoMean,values.autocorr].do({
+				arg value;
+				value.postln;
+			});
 
-		//differentiated.plot();
+			server.postln;
+		}
 	}
 
 	/*
@@ -71,13 +73,15 @@ BloodGlucose {
 	*/
 	play {
 		 Pbind.new(
-//			\instrument, \sliceBuffer,
-//			\bufnum, Prand.new([1,2,3,4,5,6,7,8,9], 30),
+			\instrument, \sliceBuffer,
+			\bufnum, Prand.new([1,2,3,4,5,6,7,8,9], 100),
 		 	\degree, Pfunc.new({values.choose.round()}),
 			\octave, 1,
-			//\pan, differentiatedPattern,
+			\pan, differentiatedPattern,
 			\scale, Scale.majorPentatonic,
-			\dur, Pwrand.new([1/4, 1/8], [10, 1].normalizeSum, 30) 
+			\finish, callback,
+			\server, server, //TODO VIKTIG!!
+			\dur, Pwrand.new([1/4, 1/8, Rest(1/4)], [6, 2, 1].normalizeSum, 100) 
 		 ).play(quant: 1);
 	}
 

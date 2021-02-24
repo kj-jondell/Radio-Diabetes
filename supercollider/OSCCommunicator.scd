@@ -1,3 +1,14 @@
+/**
+*
+* TODO: 1. 
+*       2. Glöm inte att alltid ange vilken server som ska spela upp vad...
+*       3. 
+*       4. 
+*       5. 
+*       6. 
+*
+*/
+
 // Quarks.install(File.getcwd +/+ "classes"); // needs to be recompiled..., only needs to be added once...
 // Quarks.clear
 // thisProcess.recompile;
@@ -5,15 +16,28 @@
 //     LanguageConfig.addIncludePath(File.getcwd +/+ "/classes");
 //     LanguageConfig.store(File.getcwd +/+ "sclang_conf.yaml");
 // )
+
 var dataPackets = List.new();
 var newDataPack;
+
+// ---------- SERVER SETTINGS ---------- 
+var server, serverOptions = ServerOptions.new;
+
+var serverPort = 58009;
+
+var deleteCallback = {
+  arg ...args;
+  args.postln;
+  "HELLO!".postln;
+};
+// ---------- OSC DEF ---------- 
 
 var oscFunc = {
 
 	arg msg, time, addr, recvPort;
 
 	switch(msg[0],
-		'/newPackage', {newDataPack = BloodGlucose.new();}, 
+		'/newPackage', {newDataPack = BloodGlucose.new(server, deleteCallback);}, 
 		'/value', {newDataPack.addValue(msg[1]);},
 		'/meta', {
 		  newDataPack.metaData = Dictionary.newFrom(msg[1..]);
@@ -27,10 +51,6 @@ var oscFunc = {
 	);
 
 };
-// ---------- SERVER SETTINGS ---------- 
-var server, serverOptions = ServerOptions.new;
-
-var serverPort = 58009;
 
 /* TODO ta bort hjälp-synthDef */
 SynthDef.new(\sin,  {
@@ -50,12 +70,16 @@ server = Server.new(\diabetesServer,  NetAddr("localhost", serverPort),  options
 SynthDescLib.global.addServer(server);
 thisProcess.addOSCRecvFunc(oscFunc);
 
+//OSCFunc.trace(true);
+
 Require("defs/SynthDefs");
 server.waitForBoot({
     SoundFile.collectIntoBuffers(File.getcwd +/+ "defs/media/normalized/*",  server: server);
 
     server.sync;
 
+	"playing...".postln;
+	Synth.new(\sin, [\freq, 110+30.rand], target: server);
     "Done!".postln;
 });
 
