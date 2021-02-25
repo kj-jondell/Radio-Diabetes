@@ -68,11 +68,18 @@ BloodGlucose {
 		}
 	}
 
+	/*
+	* Returns whether object played min time
+	*/
+	minTimePassed {
+	  ^((player.clock.seconds-startTime)>minTime);
+	}
+
 	prCleanup {
 		arg fadeOut;
 		player.xstop(fadeOut);
 		if(isCleaned == false){
-			isCleaned.postln;
+			//isCleaned.postln;
 			cleanupFunction.value(this);
 			isCleaned = true;
 		};
@@ -85,7 +92,8 @@ BloodGlucose {
 				this.prCleanup(fadeOut);
 			} {
 				if((player.clock.seconds-startTime)>minTime){
-					if (hasWaiting) {
+					if (hasWaiting) { // fixa så program väljer det objekt som spelat längst (först på play stack som uppfyller mintime krav) 
+					// TODO ta bort, kanske bättre att göra detta i kommunikatorn
 						this.prCleanup(fadeOut);
 					}
 				}
@@ -110,7 +118,7 @@ BloodGlucose {
 		   		 \scale, Scale.majorPentatonic,
 		   		 \callback, {this.prCallback(maxTime, fadeOut, minTime);},
 		   		 \server, server, //TODO VIKTIG!!
-		   		 \dur, Pwrand.new([1/4, 1/8, 1/16, Rest(1/4)], [6, 2, 0.5, 1].normalizeSum, 10) 
+		   		 \dur, Pwrand.new([1/4, 1/8/*, 1/16, Rest(1/4)*/], [6, 2/*, 0.5, 1*/].normalizeSum, 10) 
 		   	 )
 		    }, inf)
 		.asEventStreamPlayer.xplay(fadeIn, quant: 1);

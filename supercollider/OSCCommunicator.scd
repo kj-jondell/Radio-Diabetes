@@ -9,16 +9,14 @@
 *
 */
 
-// Quarks.install(File.getcwd +/+ "classes"); // needs to be recompiled..., only needs to be added once...
-// Quarks.clear
-// thisProcess.recompile;
 // (
 //     LanguageConfig.addIncludePath(File.getcwd +/+ "/classes");
 //     LanguageConfig.store(File.getcwd +/+ "sclang_conf.yaml");
 // )
 
-var dataPackets = List.new();
+var dataPackets = List.new(), enqueuedPackets = List.new();
 var newDataPack;
+var maxConcurrentObjects = 3;
 
 // ---------- SERVER SETTINGS ---------- 
 var server, serverOptions = ServerOptions.new;
@@ -26,9 +24,14 @@ var server, serverOptions = ServerOptions.new;
 var serverPort = 58009;
 
 var deleteCallback = {
-  arg ...args;
-  args.postln;
-  "HELLO!".postln;
+	arg object;
+	dataPackets.remove(object);
+	// if queue size > 0, pop item from queue and add to playing stack
+	if(enqueuedPackets.size()>0){
+		var newFromQueue = enqueuedPackets.pop();
+		newFromQueue.play(maxTime: 20, minTime: 4, fadeIn: 4, fadeOut: 4, instrument: [/*\sliceBuffer, */\sin].choose);
+		dataPackets.add(newFromQueue);
+	}
 };
 // ---------- OSC DEF ---------- 
 
@@ -40,19 +43,29 @@ var oscFunc = {
 		'/newPackage', {newDataPack = BloodGlucose.new(server, deleteCallback);}, 
 		'/value', {newDataPack.addValue(msg[1]);},
 		'/meta', {
-		  newDataPack.metaData = Dictionary.newFrom(msg[1..]);
-		  //newDataPack.metaData.postln;
+		  newDataPack.metaData = Dictionary.newFrom(msg[1..]); // TODO ta bort helt? 
 		},
 		'/valueDone', {
 		  newDataPack.createPatterns();
-          newDataPack.play();
-		  dataPackets.add(newDataPack);
+          // if playing stack is full, enqueue new packet
+		  if(dataPackets.size<maxConcurrentObjects){
+			  newDataPack.play(maxTime: 20, minTime: 4, fadeIn: 10, fadeOut: 10, instrument: [\sliceBuffer, \sin].choose); // vissa får maxtime bestämd, vissa får obestämd...
+			  dataPackets.add(newDataPack);
+			}
+			{
+				//loop through playing objects, if
+				dataPackets.do({
+					arg object;
+					object.hasWaiting = true;
+				});
+				enqueuedPackets.add(newDataPack);
+				"max".postln;
+				dataPackets.size.postln;
+			}
 		}
 	);
 
 };
-
-/* TODO ta bort hjälp-synthDef */
 
 serverOptions.device = "scjack:supercollider";
 serverOptions.numInputBusChannels = 0;
