@@ -1,6 +1,6 @@
 /**
 *
-* TODO: 1. 
+* TODO: 1. Rita upp logik och utforma unit-tester (för kön...)
 *       2. Glöm inte att alltid ange vilken server som ska spela upp vad...
 *       3. 
 *       4. 
@@ -23,15 +23,26 @@ var server, serverOptions = ServerOptions.new;
 
 var serverPort = 58009;
 
+var setWaiting = {
+	arg waiting = true;
+	dataPackets.do({
+		arg object;
+		object.hasWaiting = waiting;
+	});
+};
+
 var deleteCallback = {
 	arg object;
 	dataPackets.remove(object);
 	// if queue size > 0, pop item from queue and add to playing stack
-	if(enqueuedPackets.size()>0){
+	if(enqueuedPackets.size() > 0){
 		var newFromQueue = enqueuedPackets.pop();
-		newFromQueue.play(maxTime: 20, minTime: 4, fadeIn: 4, fadeOut: 4, instrument: [/*\sliceBuffer, */\sin].choose);
+		newFromQueue.play(maxTime: 200, minTime: 40, fadeIn: 4, fadeOut: 4, instrument: [/*\sliceBuffer, */\sin].choose);
 		dataPackets.add(newFromQueue);
-	}
+	};
+	if(enqueuedPackets.size() == 0){
+		setWaiting.value(false); //
+	};
 };
 // ---------- OSC DEF ---------- 
 
@@ -42,26 +53,32 @@ var oscFunc = {
 	switch(msg[0],
 		'/newPackage', {newDataPack = BloodGlucose.new(server, deleteCallback);}, 
 		'/value', {newDataPack.addValue(msg[1]);},
-		'/meta', {
-		  newDataPack.metaData = Dictionary.newFrom(msg[1..]); // TODO ta bort helt? 
-		},
 		'/valueDone', {
 		  newDataPack.createPatterns();
           // if playing stack is full, enqueue new packet
 		  if(dataPackets.size<maxConcurrentObjects){
-			  newDataPack.play(maxTime: 20, minTime: 4, fadeIn: 10, fadeOut: 10, instrument: [\sliceBuffer, \sin].choose); // vissa får maxtime bestämd, vissa får obestämd...
+			  newDataPack.play(maxTime: 200, minTime: 40, fadeIn: 10, fadeOut: 10, instrument: [\sliceBuffer, \sin].choose); // vissa får maxtime bestämd, vissa får obestämd...
 			  dataPackets.add(newDataPack);
 			}
 			{
 				//loop through playing objects, if
-				dataPackets.do({
-					arg object;
-					object.hasWaiting = true;
-				});
 				enqueuedPackets.add(newDataPack);
-				"max".postln;
-				dataPackets.size.postln;
-			}
+
+				block {
+					arg break;
+					dataPackets.do({
+						arg object;
+						if(object.minTimePassed()){
+							object.cleanup(fadeOut: 10);
+							break.value();
+						}
+					});
+
+					setWaiting.value(); 
+				};
+				//"max".postln;
+				//dataPackets.size.postln;
+			};
 		}
 	);
 

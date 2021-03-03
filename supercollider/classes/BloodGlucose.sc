@@ -5,7 +5,8 @@ BloodGlucose {
 	*	- scale: a Scale defining scale that will be played by this object
 	*	- soundSource: a Symbol containing name of SynthDef associated to this object
 	*/
-	var server, cleanupFunction, <>register, <>key, <>scale, <>position, <>soundSource, <>metaData, <player, <startTime = 0, isCleaned = false, >hasWaiting = false;
+	var server, cleanupFunction, <>register, <>key, <>scale, <>position, <>soundSource, <>metaData, <player, <startTime = 0, isCleaned = false, >hasWaiting = false, localMinTime = 0;
+	var <>typeOfFunction = "";
 	classvar values, index, rawPattern, differentiatedPattern;
 	classvar debug = false;
 
@@ -58,6 +59,8 @@ BloodGlucose {
 		rawPattern = Pseq.new(values, repeats);
 		differentiatedPattern = Pseq.new(differentiated, repeats);
 
+		metaData = Dictionary.newFrom([\mean, values.mean, \max, values.maxItem, \min, values.minItem, \stdDev, values.stdDev, \variance, values.variance, \geoMean, values.geoMean, \autocorr, values.autocorr]); //TODO räkna ut allt på en gång eller när det används?
+
 		if(debug){
 			[values.mean,values.maxItem,values.minItem,values.stdDev,values.variance,values.geoMean,values.autocorr].do({
 				arg value;
@@ -72,40 +75,42 @@ BloodGlucose {
 	* Returns whether object played min time
 	*/
 	minTimePassed {
-	  ^((player.clock.seconds-startTime)>minTime);
+	  ^((player.clock.seconds-startTime)>localMinTime);
 	}
 
-	prCleanup {
-		arg fadeOut;
+	cleanup {
+		arg fadeOut = 10;
 		player.xstop(fadeOut);
 		if(isCleaned == false){
-			//isCleaned.postln;
 			cleanupFunction.value(this);
 			isCleaned = true;
 		};
 	}
 
 	prCallback {
-		arg maxTime, fadeOut, minTime;
-		if(maxTime>0){
-			if(player.clock.seconds-startTime>maxTime){
-				this.prCleanup(fadeOut);
-			} {
-				if((player.clock.seconds-startTime)>minTime){
-					if (hasWaiting) { // fixa så program väljer det objekt som spelat längst (först på play stack som uppfyller mintime krav) 
-					// TODO ta bort, kanske bättre att göra detta i kommunikatorn
-						this.prCleanup(fadeOut);
-					}
-				}
-			}
-		};
+		arg maxTime, fadeOut;
+		  if(maxTime>0){
+			  if(player.clock.seconds-startTime>maxTime){
+				  this.cleanup(fadeOut);
+			  } {
+				  if((player.clock.seconds-startTime)>localMinTime){
+					  if (hasWaiting) { 
+						  this.cleanup(fadeOut);
+					  }
+				  }
+			  }
+		  };
+
 	}
 
 	/*
 	* TODO: change the content of this Pbind...
 	*/
 	play {
+		//TODO definiera dessa när objekt skapas?
 		arg fadeIn = 10, maxTime = 10, minTime = 0, fadeOut = 10, instrument = \sliceBuffer;
+
+		localMinTime = minTime;
 
 		player = Pn( 
 		    Plazy {
@@ -114,9 +119,9 @@ BloodGlucose {
 		   		 \bufnum, Prand.new([1,2,3,4,5,6,7,8,9], 100),
 		   		 \degree, Pfunc.new({values.choose.round()}),
 		   		 \octave, 1,
-		   		 \pan, differentiatedPattern,
+		   		 \pan, , //differentiatedPattern,
 		   		 \scale, Scale.majorPentatonic,
-		   		 \callback, {this.prCallback(maxTime, fadeOut, minTime);},
+		   		 \callback, {this.prCallback(maxTime, fadeOut);},
 		   		 \server, server, //TODO VIKTIG!!
 		   		 \dur, Pwrand.new([1/4, 1/8/*, 1/16, Rest(1/4)*/], [6, 2/*, 0.5, 1*/].normalizeSum, 10) 
 		   	 )

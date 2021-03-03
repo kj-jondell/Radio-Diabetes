@@ -1,3 +1,8 @@
+'''
+*****
+***** TODO: - Lägg till felhantering (dålig data...)
+*****
+'''
 from cgmparser.Parser import Parser
 from pathlib import Path
 from pythonosc import udp_client
@@ -10,7 +15,7 @@ import xlrd
 class DataSender:
 
     def __init__(self):
-        self.client = udp_client.SimpleUDPClient("localhost", 7771)
+        self.client = udp_client.SimpleUDPClient("localhost", 7771) # PORT NR borde kanske inte hårdkodas?
 
     def send_file(self, file):
         extension = Path(file.filename).suffix
@@ -24,9 +29,4 @@ class DataSender:
         self.client.send_message('/newPackage', '') # implementera start-flagg
         for value in values:
             self.client.send_message('/value', value) # test som skickar OSC meddelande till Supercollider (Sched.scd)
-        self.client.send_message('/meta', ["mean", numpy.mean(values)])
         self.client.send_message('/valueDone', '') # test som skickar OSC meddelande till Supercollider (Sched.scd)
-
-# print(numpy.mean(values), numpy.median(values), numpy.max(values), numpy.min(values))
-# # skicka medelvärde (mean, mode, median), max o min, 
-# client.send_message("/meta", [numpy.mean(values)])

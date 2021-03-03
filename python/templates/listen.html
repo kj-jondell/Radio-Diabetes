@@ -2,6 +2,6 @@
 
 {% block content %}
     <div>
-        <audio src="http://{{ request.host.split(':')[0] }}:8000/listen" controls preload></audio>
+        <audio src="http://{{ request.host.split(':')[0] }}:8000/listen" controls preload autoplay></audio>
     </div>
 {% endblock %}
