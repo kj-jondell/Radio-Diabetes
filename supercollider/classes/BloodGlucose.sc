@@ -53,14 +53,16 @@ BloodGlucose {
 	* TODO rename?
 	*/
 	createPatterns {
-		arg repeats = 4;
+		arg repeats = 12;
 		var differentiated = this.prGetDifferentiated(values, order: 1, scale: 5); 
 
-		rawPattern = Pseq.new(values, repeats);
+		rawPattern = Pseq.new(values.round(), repeats);
 		differentiatedPattern = Pseq.new(differentiated, repeats);
 
 		metaData = Dictionary.newFrom([\mean, values.mean, \max, values.maxItem, \min, values.minItem, \stdDev, values.stdDev, \variance, values.variance, \geoMean, values.geoMean, \autocorr, values.autocorr]); //TODO räkna ut allt på en gång eller när det används?
 
+		metaData[\mean].postln;
+		metaData[\variance].postln;
 		if(debug){
 			[values.mean,values.maxItem,values.minItem,values.stdDev,values.variance,values.geoMean,values.autocorr].do({
 				arg value;
@@ -117,9 +119,9 @@ BloodGlucose {
 		   	 Pbind.new(
 		   		 \instrument, instrument,
 		   		 \bufnum, Prand.new([1,2,3,4,5,6,7,8,9], 100),
-		   		 \degree, Pfunc.new({values.choose.round()}),
-		   		 \octave, 1,
-		   		 \pan, , //differentiatedPattern,
+		   		 \degree, rawPattern,
+		   		 \octave, metaData[\mean].linlin(7.0, 13.0, 0, 2).round(),
+		   		 \pan, metaData[\variance].linlin(5.0,15.0,-1.0,1.0), //differentiatedPattern,
 		   		 \scale, Scale.majorPentatonic,
 		   		 \callback, {this.prCallback(maxTime, fadeOut);},
 		   		 \server, server, //TODO VIKTIG!!

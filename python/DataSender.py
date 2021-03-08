@@ -1,6 +1,7 @@
 '''
 *****
 ***** TODO: - Lägg till felhantering (dålig data...)
+*****       - Köa datan?
 *****
 '''
 from cgmparser.Parser import Parser

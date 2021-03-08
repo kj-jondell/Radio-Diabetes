@@ -1,3 +1,8 @@
+'''
+*****
+***** TODO: - Köa datan?
+*****
+'''
 from flask import Flask, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from DataSender import DataSender 
@@ -24,11 +29,16 @@ def upload_new_file():
         thread.daemon = True
         thread.start()
 
-        return redirect(url_for('listen'))
+        return redirect(url_for('listen', play_thanks=""))
 
 @app.route('/listen')
 def listen():
-    return render_template('listen.html', title="Lyssna")
+    try:
+        request.args['play_thanks']
+        return render_template('listen.html', title="Lyssna", greeting=True)
+    except:
+        return render_template('listen.html', title="Lyssna")
+
 
 @app.route('/upload')
 def upload_file():

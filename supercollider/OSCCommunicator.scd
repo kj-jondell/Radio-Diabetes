@@ -16,7 +16,7 @@
 
 var dataPackets = List.new(), enqueuedPackets = List.new();
 var newDataPack;
-var maxConcurrentObjects = 3;
+var maxConcurrentObjects = 6;
 
 // ---------- SERVER SETTINGS ---------- 
 var server, serverOptions = ServerOptions.new;
