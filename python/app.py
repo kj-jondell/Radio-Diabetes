@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 '''
 *****
 ***** TODO: - Köa datan?
@@ -39,6 +40,10 @@ dataSender = DataSender()
 # def upload_file():
 #     return render_template('upload.html', title="Uppladdning")
 # 
+@app.route('/api/test')
+def test():
+    return str(dataSender)
+
 @app.route('/api/uppladdning', methods=['POST'])
 def upload():
     try:

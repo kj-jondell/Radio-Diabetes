@@ -1,0 +1,18 @@
+.headerlink-title:hover {
+    text-decoration: underline;
+}
+
+.headerlink-title {
+    color: white;
+    text-decoration: none;
+    padding: 0 2.5em;
+    font-size: 14pt;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    border-bottom: solid 1px white;
+    background-color: black;
+}

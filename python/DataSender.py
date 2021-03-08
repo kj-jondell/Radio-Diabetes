@@ -18,6 +18,9 @@ class DataSender:
     def __init__(self):
         self.client = udp_client.SimpleUDPClient("localhost", 7771) # PORT NR borde kanske inte hårdkodas?
 
+    def __str__(self):
+        return "A datasender..."
+
     def send_file(self, file):
         extension = Path(file.filename).suffix
         if extension == ".csv":
