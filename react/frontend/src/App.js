@@ -3,7 +3,6 @@ import {BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
 import Header from './Header'
 
 let radio = new Audio("http://192.168.0.104:8000/listen");
-let thanks = new Audio("tack.mp3");
 
 function Hem (props) { 
   return (
@@ -32,7 +31,6 @@ function Uppladdning (props) {
     .then(respons => {
       if(respons.data['uploadSuccess'])
     {
-      thanks.play();
       props.history.push('/lyssna');
       if (radio.paused)
       radio.play();
@@ -62,7 +60,6 @@ function Lyssna (props) {
 
   // fetch('/api/lyssna').then(res => res.json()).then(data => {
   //   if(data.uploadSuccess)
-  //     thanks.play();
   // });
 
   radio.play();

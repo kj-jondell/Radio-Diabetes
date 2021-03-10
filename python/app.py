@@ -49,9 +49,7 @@ def upload():
     try:
         f = request.files['file']
 
-        thread = Thread(target=dataSender.send_file, args=(f,))
-        thread.daemon = True
-        thread.start()
+        dataSender.send_file(f)
 
         return {'uploadSuccess' : True}
     except:

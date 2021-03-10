@@ -61,8 +61,6 @@ BloodGlucose {
 
 		metaData = Dictionary.newFrom([\mean, values.mean, \max, values.maxItem, \min, values.minItem, \stdDev, values.stdDev, \variance, values.variance, \geoMean, values.geoMean, \autocorr, values.autocorr]); //TODO räkna ut allt på en gång eller när det används?
 
-		metaData[\mean].postln;
-		metaData[\variance].postln;
 		if(debug){
 			[values.mean,values.maxItem,values.minItem,values.stdDev,values.variance,values.geoMean,values.autocorr].do({
 				arg value;
@@ -110,7 +108,8 @@ BloodGlucose {
 	*/
 	play {
 		//TODO definiera dessa när objekt skapas?
-		arg fadeIn = 10, maxTime = 10, minTime = 0, fadeOut = 10, instrument = \sliceBuffer;
+		arg fadeIn = 10, maxTime = 10, minTime = 0, fadeOut = 10, octave = 0, instrument = \sliceBuffer;
+		//var octave = metaData[\mean].linlin(7.0, 13.0, 0, 2).round();
 
 		localMinTime = minTime;
 
@@ -120,7 +119,7 @@ BloodGlucose {
 		   		 \instrument, instrument,
 		   		 \bufnum, Prand.new([1,2,3,4,5,6,7,8,9], 100),
 		   		 \degree, rawPattern,
-		   		 \octave, metaData[\mean].linlin(7.0, 13.0, 0, 2).round(),
+		   		 \octave, octave,
 		   		 \pan, metaData[\variance].linlin(5.0,15.0,-1.0,1.0), //differentiatedPattern,
 		   		 \scale, Scale.majorPentatonic,
 		   		 \callback, {this.prCallback(maxTime, fadeOut);},

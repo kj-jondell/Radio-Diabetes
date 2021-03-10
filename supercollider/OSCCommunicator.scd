@@ -23,6 +23,9 @@ var server, serverOptions = ServerOptions.new;
 
 var serverPort = 58009;
 
+// ---------- SOUND SETTINGS ---------- 
+var greetingBuffers;
+
 var setWaiting = {
 	arg waiting = true;
 	dataPackets.do({
@@ -37,7 +40,7 @@ var deleteCallback = {
 	// if queue size > 0, pop item from queue and add to playing stack
 	if(enqueuedPackets.size() > 0){
 		var newFromQueue = enqueuedPackets.pop();
-		newFromQueue.play(maxTime: 200, minTime: 40, fadeIn: 4, fadeOut: 4, instrument: [/*\sliceBuffer, */\sin].choose);
+		newFromQueue.play(maxTime: 200, minTime: 40, fadeIn: 4, fadeOut: 4, instrument: [/*\sliceBuffer, */\sin].choose, octave: 2.rand);
 		dataPackets.add(newFromQueue);
 	};
 	if(enqueuedPackets.size() == 0){
@@ -54,10 +57,14 @@ var oscFunc = {
 		'/newPackage', {newDataPack = BloodGlucose.new(server, deleteCallback);}, 
 		'/value', {newDataPack.addValue(msg[1]);},
 		'/valueDone', {
+			{
+				var bufnum = greetingBuffers.choose.bufnum;
+				PlayBuf.ar(1, bufnum: bufnum, rate: BufRateScale.kr(bufnum), doneAction: Done.freeSelf)!2
+			}.play(target: server);
 		  newDataPack.createPatterns();
           // if playing stack is full, enqueue new packet
 		  if(dataPackets.size<maxConcurrentObjects){
-			  newDataPack.play(maxTime: 200, minTime: 40, fadeIn: 10, fadeOut: 10, instrument: [\sliceBuffer, \sin].choose); // vissa får maxtime bestämd, vissa får obestämd...
+			  newDataPack.play(maxTime: 200, minTime: 40, fadeIn: 10, fadeOut: 10, instrument: [\sliceBuffer, \sin].choose, octave: 2.rand); // vissa får maxtime bestämd, vissa får obestämd...
 			  dataPackets.add(newDataPack);
 			}
 			{
@@ -100,11 +107,12 @@ thisProcess.addOSCRecvFunc(oscFunc);
 Require("defs/SynthDefs");
 server.waitForBoot({
     SoundFile.collectIntoBuffers(File.getcwd +/+ "defs/media/normalized/*",  server: server);
+	greetingBuffers = SoundFile.collectIntoBuffers(File.getcwd +/+ "/media/tack/*", server: server);
 
     server.sync;
 
 	"playing...".postln;
-	Synth.new(\sin, [\freq, 110+30.rand], target: server);
+	//Synth.new(\sin, [\freq, 110+30.rand], target: server);
     "Done!".postln;
 });
 
