@@ -6,21 +6,12 @@ import numpy
 import csv
 from dateutil import parser
 
-FILE_OUTPUT = "" # TODO vilket filnamn...
-SAMPLE_RATE = 48000
-AMT_OUTPUT = 10
+# FILE_OUTPUT = "" # TODO vilket filnamn...
+# SAMPLE_RATE = 48000
+# AMT_OUTPUT = 10
 BUFFER_SIZE = 2048
 ROW_OFFSET = 5
 SHEET_NO = 1
-
-# Helper function TODO ha kvar eller inte??
-#function taken from https://stackoverflow.com/questions/54032515/spectral-centroid-of-numpy-array
-def spectral_centroid(x, samplerate = 48000):
-    magnitudes = numpy.abs(numpy.fft.rfft(x))
-    length = len(x)
-    freqs = numpy.abs(numpy.fft.fftfreq(length, 1.0/samplerate)[:length//2+1])
-    magnitudes = magnitudes[:length//2+1]
-    return numpy.sum(magnitudes*freqs) / numpy.sum(magnitudes)
 
 class Parser():
 
@@ -72,25 +63,25 @@ class Parser():
             times.append((int)((date-base_time).total_seconds()/60))
         return times, values
 
-    ### output extraction
-    def extract_output(self, spl):
-        centroids = list()
-        for sample_index in range(0, AMT_OUTPUT): #TODO beräkna amt_output
-            sample = []
-            for x in range(BUFFER_SIZE*sample_index, BUFFER_SIZE*(sample_index+1)):
-                sample.append(spl(x))
-            sample = [(x-min(sample)) for x in sample]
-            sample = [ 2*(x/(max(sample)-min(sample))-0.5) for x in sample] #normalize and center sound
+    # ### output extraction
+    # def extract_output(self, spl):
+    #     centroids = list()
+    #     for sample_index in range(0, AMT_OUTPUT): #TODO beräkna amt_output
+    #         sample = []
+    #         for x in range(BUFFER_SIZE*sample_index, BUFFER_SIZE*(sample_index+1)):
+    #             sample.append(spl(x))
+    #         sample = [(x-min(sample)) for x in sample]
+    #         sample = [ 2*(x/(max(sample)-min(sample))-0.5) for x in sample] #normalize and center sound
 
-            for ind, w_sample in enumerate(signal.hamming(BUFFER_SIZE)): #TODO annan windowing-funktion?
-                sample[ind] = sample[ind]*w_sample
+    #         for ind, w_sample in enumerate(signal.hamming(BUFFER_SIZE)): #TODO annan windowing-funktion?
+    #             sample[ind] = sample[ind]*w_sample
 
-            centroids.append(spectral_centroid(sample, SAMPLE_RATE)) #prints spectral centroids (before formatting as wavetable but after windowing!)
+    #         centroids.append(spectral_centroid(sample, SAMPLE_RATE)) #prints spectral centroids (before formatting as wavetable but after windowing!)
 
-            for ind, c_sample in enumerate(sample):
-                if ind % 2 == 0:
-                    sample[ind] = 2*sample[ind] - sample[ind+1]
-                else:
-                    sample[ind] = sample[ind] - sample[ind-1]
+    #         for ind, c_sample in enumerate(sample):
+    #             if ind % 2 == 0:
+    #                 sample[ind] = 2*sample[ind] - sample[ind+1]
+    #             else:
+    #                 sample[ind] = sample[ind] - sample[ind-1]
 
-            #sf.write(f'{FILE_OUTPUT}{sample_index+1}', sample, SAMPLE_RATE) 
+    #         #sf.write(f'{FILE_OUTPUT}{sample_index+1}', sample, SAMPLE_RATE) 

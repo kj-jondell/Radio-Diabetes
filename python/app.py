@@ -5,6 +5,7 @@
 *****
 '''
 from flask import Flask, render_template, request, redirect, url_for
+from flask_sockets import Sockets
 from werkzeug.utils import secure_filename
 from DataSender import DataSender 
 
@@ -15,7 +16,16 @@ import os
 
 app = Flask(__name__)
 app.secret_key = os.urandom(42)
+app.debug = True
 dataSender = DataSender()
+sockets = Sockets(app)
+
+print("SETUP Complete...")
+@sockets.route("/filter")
+def filter(ws):
+    print("hello")
+    print(ws.receive())
+    return "hello"
 
 # @app.route('/')
 # def load_start_page():

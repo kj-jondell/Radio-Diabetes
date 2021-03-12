@@ -18,6 +18,10 @@ BloodGlucose {
         ^super.newCopyArgs(server_, cleanup_);
 	}
 
+	plot {
+	  values.plot;
+	}
+
 	/*
 	*
 	* Adds new value received from OSC
