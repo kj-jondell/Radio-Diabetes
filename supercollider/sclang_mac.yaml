@@ -1,0 +1,10 @@
+includePaths:
+    -   /Volumes/school/KMH/åk3/kandidat/kod/supercollider/classes
+    -   /Users/kj/Library/Application Support/SuperCollider/downloaded-quarks/Require
+    -   /Users/kj/Library/Application Support/SuperCollider/downloaded-quarks/MathLib
+    -   /Users/kj/Library/Application Support/SuperCollider/downloaded-quarks/wslib
+      #-   /home/kj/.local/share/SuperCollider/downloaded-quarks/Require
+      #-   /home/kj/.local/share/SuperCollider/downloaded-quarks/MathLib
+excludePaths:
+    []
+postInlineWarnings: false

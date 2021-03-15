@@ -15,14 +15,14 @@ parser.add_argument("--port", default=57120)
 args = parser.parse_args()
 client = udp_client.SimpleUDPClient(args.ip, args.port)
 
-client.send_message("/newPacket", "differentiated")
+client.send_message("/newPackage", "differentiated")
 
 def send_osc_message(value, time_value=None):
     if time_value != None:
         #print((value,time_value))
-        client.send_message("/value", (value, time_value))
+        client.send_message("/point", (value, time_value))
     else:
-        client.send_message("/value", value)
+        client.send_message("/point", value)
     
 for index, item in enumerate(values):
     send_osc_message(item, times[index])
@@ -38,4 +38,4 @@ for index, item in enumerate(values):
 # # skicka medelvärde (mean, mode, median), max o min, 
 # client.send_message("/meta", [numpy.mean(values)])
 # 
-client.send_message("/done", "")
+client.send_message("/valueDoneDebug", "")

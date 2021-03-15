@@ -27,6 +27,4 @@ async def init_main():
 
     transport.close()
 
-    await loop()
-
 asyncio.run(init_main())

@@ -31,6 +31,6 @@ class DataSender:
             return
 
         self.client.send_message('/newPackage', '') # implementera start-flagg
-        for value in values:
-            self.client.send_message('/value', value) # test som skickar OSC meddelande till Supercollider (Sched.scd)
-        self.client.send_message('/valueDone', '') # test som skickar OSC meddelande till Supercollider (Sched.scd)
+        for index, value in enumerate(values):
+            self.client.send_message('/point', (value, times[index])) 
+        self.client.send_message('/valueDone', '') 

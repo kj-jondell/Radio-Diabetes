@@ -7,19 +7,34 @@ BloodGlucose {
 	*/
 	var server, cleanupFunction, <>register, <>key, <>scale, <>position, <>soundSource, <>metaData, <player, <startTime = 0, isCleaned = false, >hasWaiting = false, localMinTime = 0;
 	var <>typeOfFunction = "";
-	classvar values, index, rawPattern, differentiatedPattern;
+	classvar points, values, index, rawPattern, differentiatedPattern;
 	classvar debug = false;
 
     *new {
 		arg server_, cleanup_;
 		index = 0;
 		values = List.new();
+		points = List.new();
 
         ^super.newCopyArgs(server_, cleanup_);
 	}
 
 	plot {
-	  values.plot;
+		{
+			points.collect({arg i; i.y;}).plot;
+			points.collect({arg i; i.x;}).plot;
+		}.defer;
+	  ///values.plot;
+	}
+
+	/*
+	*
+	* Adds new value received from OSC
+	*
+	*/
+	addPoint {
+		arg x, y;
+		points = points.add(Point.new(x,y));
 	}
 
 	/*
@@ -29,7 +44,7 @@ BloodGlucose {
 	*/
 	addValue {
 		arg value;
-		values.add(value);
+		values = values.add(value);
 	}
 
 	/*
@@ -58,7 +73,9 @@ BloodGlucose {
 	*/
 	createPatterns {
 		arg repeats = 12;
-		var differentiated = this.prGetDifferentiated(values, order: 1, scale: 5); 
+		var differentiated;
+
+		differentiated = this.prGetDifferentiated(values, order: 1, scale: 5); 
 
 		rawPattern = Pseq.new(values.round(), repeats);
 		differentiatedPattern = Pseq.new(differentiated, repeats);

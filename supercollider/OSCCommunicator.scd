@@ -14,6 +14,8 @@
 //     LanguageConfig.store(File.getcwd +/+ "sclang_conf.yaml");
 // )
 
+var debug_ = true;
+
 var dataPackets = List.new(), enqueuedPackets = List.new();
 var newDataPack;
 var maxConcurrentObjects = 6;
@@ -55,12 +57,16 @@ var oscFunc = {
 
 	switch(msg[0],
 		'/newPackage', {newDataPack = BloodGlucose.new(server, deleteCallback);}, 
-		'/value', {newDataPack.addValue(msg[1]);},
+		'/point', {newDataPack.addPoint(msg[1], msg[2]);},
+		'/valueDoneDebug', {
+			newDataPack.plot;
+		},
 		'/valueDone', {
-			{
-				var bufnum = greetingBuffers.choose.bufnum;
-				PlayBuf.ar(1, bufnum: bufnum, rate: BufRateScale.kr(bufnum), doneAction: Done.freeSelf)!2
-			}.play(target: server);
+		  { // TODO göra en annan funktion för att spela upp hälsningsmeddelanden...
+			  var bufnum = greetingBuffers.choose.bufnum;
+			  PlayBuf.ar(1, bufnum: bufnum, rate: BufRateScale.kr(bufnum), doneAction: Done.freeSelf)!2
+		  }.play(target: server);
+
 		  newDataPack.createPatterns();
           // if playing stack is full, enqueue new packet
 		  if(dataPackets.size<maxConcurrentObjects){
@@ -91,11 +97,17 @@ var oscFunc = {
 
 };
 
-serverOptions.device = "scjack:supercollider";
-serverOptions.numInputBusChannels = 0;
+if(debug_){
+  serverPort = 57121;
 
-"SC_JACK_DEFAULT_INPUTS".setenv();
-"SC_JACK_DEFAULT_OUTPUTS".setenv("darkice-piano"); //TODO change name of darkice-jack node
+}
+{
+  serverOptions.device = "scjack:supercollider";
+  serverOptions.numInputBusChannels = 0;
+
+  "SC_JACK_DEFAULT_INPUTS".setenv();
+  "SC_JACK_DEFAULT_OUTPUTS".setenv("darkice-piano"); //TODO change name of darkice-jack node
+};
 
 server = Server.new(\diabetesServer,  NetAddr("localhost", serverPort),  options: serverOptions); // non-standard server port!
 
@@ -112,7 +124,7 @@ server.waitForBoot({
     server.sync;
 
 	"playing...".postln;
-	//Synth.new(\sin, [\freq, 110+30.rand], target: server);
+	Synth.new(\sin, [\freq, 110+30.rand], target: server);
     "Done!".postln;
 });
 
