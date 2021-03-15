@@ -9,16 +9,11 @@
 *
 */
 
-// (
-//     LanguageConfig.addIncludePath(File.getcwd +/+ "/classes");
-//     LanguageConfig.store(File.getcwd +/+ "sclang_conf.yaml");
-// )
-
-var debug_ = true;
+var debug_ = false;
 
 var dataPackets = List.new(), enqueuedPackets = List.new();
 var newDataPack;
-var maxConcurrentObjects = 6;
+var maxConcurrentObjects = 3;
 
 // ---------- SERVER SETTINGS ---------- 
 var server, serverOptions = ServerOptions.new;
@@ -26,7 +21,7 @@ var server, serverOptions = ServerOptions.new;
 var serverPort = 58009;
 
 // ---------- SOUND SETTINGS ---------- 
-var greetingBuffers;
+var greetingBuffers, electricBuffers;
 
 var setWaiting = {
 	arg waiting = true;
@@ -42,7 +37,7 @@ var deleteCallback = {
 	// if queue size > 0, pop item from queue and add to playing stack
 	if(enqueuedPackets.size() > 0){
 		var newFromQueue = enqueuedPackets.pop();
-		newFromQueue.play(maxTime: 200, minTime: 40, fadeIn: 4, fadeOut: 4, instrument: [/*\sliceBuffer, */\sin].choose, octave: 2.rand);
+		newFromQueue.play(buffers:  electricBuffers, maxTime: 200, minTime: 40, fadeIn: 4, fadeOut: 4, instrument: [/*\sliceBuffer, */\sin].choose, octave: 2.rand);
 		dataPackets.add(newFromQueue);
 	};
 	if(enqueuedPackets.size() == 0){
@@ -57,9 +52,17 @@ var oscFunc = {
 
 	switch(msg[0],
 		'/newPackage', {newDataPack = BloodGlucose.new(server, deleteCallback);}, 
-		'/point', {newDataPack.addPoint(msg[1], msg[2]);},
+		'/point', {newDataPack.addPoint(msg[2], msg[1]);}, // punkt = tid, värde
 		'/valueDoneDebug', {
-			newDataPack.plot;
+			var array = newDataPack.wavetableCreator(newDataPack.createInterpolated(0,500), 1024, server);
+
+			Routine.run{
+				server.sync;
+				3.do({
+					Synth.new(\Diabetes, [\freq, Scale.majorPentatonic.degreeToFreq(10.rand, 110, 0), \detuneFactor, 1.5, \orderSize, array.size, \velocity, 30, \flutter, 0.000001, \bufferNum, array[0].bufnum], target: server);
+				});
+			};
+
 		},
 		'/valueDone', {
 		  { // TODO göra en annan funktion för att spela upp hälsningsmeddelanden...
@@ -70,7 +73,7 @@ var oscFunc = {
 		  newDataPack.createPatterns();
           // if playing stack is full, enqueue new packet
 		  if(dataPackets.size<maxConcurrentObjects){
-			  newDataPack.play(maxTime: 200, minTime: 40, fadeIn: 10, fadeOut: 10, instrument: [\sliceBuffer, \sin].choose, octave: 2.rand); // vissa får maxtime bestämd, vissa får obestämd...
+			  newDataPack.play(buffers: electricBuffers, maxTime: 0, minTime: 40, fadeIn: 10, fadeOut: 10, instrument: [\sliceBuffer/*, \sin*/].choose, octave: 4.rand*5-20); // vissa får maxtime bestämd, vissa får obestämd...
 			  dataPackets.add(newDataPack);
 			}
 			{
@@ -97,16 +100,12 @@ var oscFunc = {
 
 };
 
-if(debug_){
-  serverPort = 57121;
-
-}
-{
+if(debug_ == false){
   serverOptions.device = "scjack:supercollider";
   serverOptions.numInputBusChannels = 0;
 
   "SC_JACK_DEFAULT_INPUTS".setenv();
-  "SC_JACK_DEFAULT_OUTPUTS".setenv("darkice-piano"); //TODO change name of darkice-jack node
+  "SC_JACK_DEFAULT_OUTPUTS".setenv("diabetes-radio"); 
 };
 
 server = Server.new(\diabetesServer,  NetAddr("localhost", serverPort),  options: serverOptions); // non-standard server port!
@@ -118,7 +117,7 @@ thisProcess.addOSCRecvFunc(oscFunc);
 
 Require("defs/SynthDefs");
 server.waitForBoot({
-    SoundFile.collectIntoBuffers(File.getcwd +/+ "defs/media/normalized/*",  server: server);
+    electricBuffers = SoundFile.collectIntoBuffers(File.getcwd +/+ "defs/media/normalized/*",  server: server);
 	greetingBuffers = SoundFile.collectIntoBuffers(File.getcwd +/+ "/media/tack/*", server: server);
 
     server.sync;

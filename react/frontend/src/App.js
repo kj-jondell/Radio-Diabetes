@@ -1,61 +1,46 @@
 import axios from 'axios';
-import {BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
+import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
+
 import Header from './Header'
 
 let radio = new Audio("http://192.168.0.104:8000/listen");
 
-function Hem (props) { 
-  return (
-    <div>
-      <h2>Hem</h2>
-    </div>
-  );
-}
+function Hem(props) { return (<div><h2>Hem</h2>
+    </div>); }
 
 /*
-* Gör om till en egen klass...
-*/
-function Uppladdning (props) { 
+ * Gör om till en egen klass...
+ */
+function Uppladdning(props) {
   let file;
 
-  let onFileChange = event => {
-    file = event.target.files[0];
-  };
+  let onFileChange = event => { file = event.target.files[0]; };
 
   let onUserSubmit = event => {
     event.preventDefault();
     const formData = new FormData();
     formData.append("file", file);
-    axios
-    .post("/api/uppladdning", formData)
-    .then(respons => {
-      if(respons.data['uploadSuccess'])
-    {
-      props.history.push('/lyssna');
-      if (radio.paused)
-      radio.play();
-    }
+    axios.post("/api/uppladdning", formData).then(respons => {
+      if (respons.data['uploadSuccess']) {
+        props.history.push('/lyssna');
+        if (radio.paused)
+          radio.play();
+      }
     });
     return false;
   };
 
- return (
-  <div>
-    <form onSubmit={onUserSubmit}>
-      <input type="file" onChange={onFileChange} accept=".xls, .xlsx, .csv"/>
-      <input type="submit" value="Skicka"/>
-    </form>
-  </div>
-  );
- }
+  return (<div><form onSubmit = {onUserSubmit}>
+          <input type = "file" onChange = {onFileChange} accept =
+               ".xls, .xlsx, .csv" /><input type = "submit" value = "Skicka" />
+          </form>
+  </div>);
+}
 
-const Om = () => (
-  <div>
-    <h2>Om</h2>
-  </div>
-)
+const Om = () => (<div><h2>Om</h2>
+  </div>)
 
-function Lyssna (props) { 
+function Lyssna(props) {
   let uploadSuccess = false;
 
   // fetch('/api/lyssna').then(res => res.json()).then(data => {
@@ -64,12 +49,9 @@ function Lyssna (props) {
 
   radio.play();
 
-  return (
-    <div>
-      <h2>Lyssna här på mig...</h2>
-    </div>
-  );
- }
+  return (<div><h2>Lyssna här på mig...</h2>
+    </div>);
+}
 
 function App() {
 

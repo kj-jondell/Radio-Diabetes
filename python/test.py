@@ -38,4 +38,5 @@ for index, item in enumerate(values):
 # # skicka medelvärde (mean, mode, median), max o min, 
 # client.send_message("/meta", [numpy.mean(values)])
 # 
-client.send_message("/valueDoneDebug", "")
+#client.send_message("/valueDoneDebug", "")
+client.send_message("/valueDone", "")

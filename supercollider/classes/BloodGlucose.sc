@@ -19,6 +19,42 @@ BloodGlucose {
         ^super.newCopyArgs(server_, cleanup_);
 	}
 
+	/**
+	*
+	* creates interpolation so that the index number corresponds to time in minutes (i.ex. so values[index] is correct).
+	*
+	*/
+	createInterpolated {
+		arg startPoint = 0, endPoint = 100;
+		var interpolatedPoints = [];
+		points[startPoint..endPoint].do({
+			arg currentPoint, currentIndex;
+			var diff = points[currentIndex+1]-currentPoint;
+			interpolatedPoints = interpolatedPoints ++ Array.interpolation(diff.x, currentPoint.y, points[currentIndex+1].y);
+		});
+		^interpolatedPoints;
+	}
+
+	wavetableCreator {
+			arg array, bufsize = 1024, server = Server.default;
+			var amtBuffers = floor(array.size/bufsize);
+			var bufferArray;
+
+			bufferArray = Array.fill(amtBuffers, {
+				arg index;
+				var newBuffer = Buffer.alloc(server, bufsize*2);
+				newBuffer.loadCollection(((
+					array[(index.asInteger*bufsize)..((index.asInteger+1)*bufsize-1)])
+					.as(Signal).normalizeTransfer()
+					* Signal.hanningWindow(bufsize))
+					.asWavetable);
+				newBuffer; //returns newbuffer to array
+			});
+
+			^bufferArray;
+			//bufferArray.postln;
+	}
+
 	plot {
 		{
 			points.collect({arg i; i.y;}).plot;
@@ -72,8 +108,10 @@ BloodGlucose {
 	* TODO rename?
 	*/
 	createPatterns {
-		arg repeats = 12;
+		arg repeats = inf;
 		var differentiated;
+
+		values = points.collect({arg point; point.y});
 
 		differentiated = this.prGetDifferentiated(values, order: 1, scale: 5); 
 
@@ -129,27 +167,36 @@ BloodGlucose {
 	*/
 	play {
 		//TODO definiera dessa när objekt skapas?
-		arg fadeIn = 10, maxTime = 10, minTime = 0, fadeOut = 10, octave = 0, instrument = \sliceBuffer;
+		arg buffers, fadeIn = 10, maxTime = 10, minTime = 0, fadeOut = 10, octave = 0, instrument = \sliceBuffer;
 		//var octave = metaData[\mean].linlin(7.0, 13.0, 0, 2).round();
+
+		//var root = 2.rand*5-10;
+
+		var scale = Scale.majorPentatonic;
+		scale.tuning(\just);
 
 		localMinTime = minTime;
 
-		player = Pn( 
-		    Plazy {
+		player = // Pn( 
+		    //Plazy {
 		   	 Pbind.new(
 		   		 \instrument, instrument,
-		   		 \bufnum, Prand.new([1,2,3,4,5,6,7,8,9], 100),
+		   		 \bufnum, Pfunc.new({buffers.choose.bufnum;}), //TODO ÄNDRA DETTA!!!!!!!!
 		   		 \degree, rawPattern,
-		   		 \octave, octave,
-		   		 \pan, metaData[\variance].linlin(5.0,15.0,-1.0,1.0), //differentiatedPattern,
-		   		 \scale, Scale.majorPentatonic,
+		   		 \octave, 4.rand+1,
+				 //Scale.majorPentatonic
+		   		 \pan, 2.0.rand-1.0, //differentiatedPattern,
+				 \resonantAmp, Pwhite.new(0,2.0, inf),
+				 \release, Pwhite.new(0.5,1.5, inf),
+		   		 \scale, scale,
 		   		 \callback, {this.prCallback(maxTime, fadeOut);},
 		   		 \server, server, //TODO VIKTIG!!
-		   		 \dur, Pwrand.new([1/4, 1/8/*, 1/16, Rest(1/4)*/], [6, 2/*, 0.5, 1*/].normalizeSum, 10) 
+		   		 \dur, Pwrand.new([1/4, 1/8/*, 1/16, Rest(1/4)*/], [6, 2/*, 0.5, 1*/].normalizeSum, inf) 
 		   	 )
-		    }, inf)
+		    //}, inf)
 		.asEventStreamPlayer.xplay(fadeIn, quant: 1);
 		startTime = player.clock.seconds;
+		{server.meter;}.defer;
 	}
 
 	printOn {

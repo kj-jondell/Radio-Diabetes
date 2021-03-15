@@ -35,7 +35,8 @@ SynthDef.new(\sliceBuffer, {
 		var signal = PlayBuf.ar(2, bufnum, rate*BufRateScale.kr(bufnum)/*, doneAction:Done.freeSelf*/);
 		var delayTime = 1 / (freq);
 		var resonator = CombL.ar(signal, delayTime, delayTime, release)*resonantAmp;
-		var panner = Pan2.ar(in: (resonator+signal),  pos: pan);
+		var combined = (resonator+signal);
+		var panner = Balance2.ar(left: combined[0], right: combined[1],  pos: pan);
 		Out.ar(outBus, EnvGen.kr(Env.perc(attackTime: attack, releaseTime: release), doneAction:Done.freeSelf)*Limiter.ar(panner, level: amp));
 	}).add;
 
@@ -47,18 +48,15 @@ SynthDef.new(\sliceBuffer, {
 SynthDef.new(\gatedBuffer, {
     arg bufnum, rate = 1, pan = 0, gate_level = 0.2, midi_gate_level = 0.0, out_bus = 2;
     var signal = PlayBuf.ar(2, bufnum, rate*BufRateScale.kr(bufnum), loop: 1);
-    var panner = Pan2.ar(in: signal,  pos: pan, level: -3.dbamp);
+    var panner = Balance2.ar(left: signal[0], right: signal[1],  pos: pan, level: -3.dbamp);
     var maximum = Peak.kr(signal, LFPulse.kr(5));
     var gate = EnvGen.ar(Env.asr(attackTime: 0.0035,releaseTime:0.08), gate: maximum-gate_level-midi_gate_level);
     Out.ar(out_bus, panner*gate);
 }).add;
 
 
-// 0.exit; // använd endast när script körs från terminalen
-
-
 SynthDef.new(\sin,  {
-	arg freq = 110;
+	arg freq = 110, pan=0;
 	var sinOsc = SinOsc.ar(freq, mul:0.1)*EnvGen.kr(Env.perc(), doneAction: Done.freeSelf);
-	Out.ar(0, sinOsc!2);
+	Out.ar(0, Pan2.ar(in: sinOsc, pos: pan));
 }).add;

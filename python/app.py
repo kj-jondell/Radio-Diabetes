@@ -5,7 +5,6 @@
 *****
 '''
 from flask import Flask, render_template, request, redirect, url_for
-from flask_sockets import Sockets
 from werkzeug.utils import secure_filename
 from DataSender import DataSender 
 
@@ -18,41 +17,8 @@ app = Flask(__name__)
 app.secret_key = os.urandom(42)
 app.debug = True
 dataSender = DataSender()
-sockets = Sockets(app)
 
 print("SETUP Complete...")
-@sockets.route("/filter")
-def filter(ws):
-    print("hello")
-    print(ws.receive())
-    return "hello"
-
-# @app.route('/')
-# def load_start_page():
-#     return render_template('index.html', title="Diabetes sonifiering")
-# 
-# @app.route('/uploader', methods=['POST'])
-# def upload_new_file():
-#     if request.method == 'POST':
-#         f = request.files['file']
-# 
-#         thread = Thread(target=dataSender.send_file, args=(f,))
-#         thread.daemon = True
-#         thread.start()
-# 
-#         return redirect(url_for('listen'))
-# 
-# @app.route('/listen')
-# def listen():
-#     return render_template('listen.html', title="Lyssna")
-# 
-# @app.route('/upload')
-# def upload_file():
-#     return render_template('upload.html', title="Uppladdning")
-# 
-@app.route('/api/test')
-def test():
-    return str(dataSender)
 
 @app.route('/api/uppladdning', methods=['POST'])
 def upload():
@@ -63,6 +29,7 @@ def upload():
 
         return {'uploadSuccess' : True}
     except:
+
         return {'uploadSuccess' : False}
 
 if __name__ == '__main__':
