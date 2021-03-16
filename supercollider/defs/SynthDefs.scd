@@ -56,7 +56,14 @@ SynthDef.new(\gatedBuffer, {
 
 
 SynthDef.new(\sin,  {
-	arg freq = 110, pan=0;
-	var sinOsc = SinOsc.ar(freq, mul:0.1)*EnvGen.kr(Env.perc(), doneAction: Done.freeSelf);
+	arg freq = 110, pan=0, release = 1;
+	var sinOsc = SinOsc.ar(freq, mul:0.1)*EnvGen.kr(Env.perc(release: release), doneAction: Done.freeSelf);
 	Out.ar(0, Pan2.ar(in: sinOsc, pos: pan));
+}).add;
+
+SynthDef.new(\rockingGSM, {
+	arg bufnum = 0, freq = 110, pan = 0, amp = 1;
+	var signal = PlayBuf.ar(2, bufnum: bufnum,  rate: freq/155.0/*,  trigger: 1.0*/, loop: 1,  doneAction: Done.freeSelf);
+	signal = Balance2.ar(left: signal[0], right: signal[1], pos: pan, level: amp);
+	Out.ar(0, signal);
 }).add;

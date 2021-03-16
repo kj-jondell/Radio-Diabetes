@@ -21,7 +21,7 @@ var server, serverOptions = ServerOptions.new;
 var serverPort = 58009;
 
 // ---------- SOUND SETTINGS ---------- 
-var greetingBuffers, electricBuffers;
+var greetingBuffers, electricBuffers, gsmBuffer;
 
 var setWaiting = {
 	arg waiting = true;
@@ -119,11 +119,16 @@ Require("defs/SynthDefs");
 server.waitForBoot({
     electricBuffers = SoundFile.collectIntoBuffers(File.getcwd +/+ "defs/media/normalized/*",  server: server);
 	greetingBuffers = SoundFile.collectIntoBuffers(File.getcwd +/+ "/media/tack/*", server: server);
+	gsmBuffer = Buffer.read(server, File.getcwd +/+ "media/häftigGSM.wav");
 
     server.sync;
 
 	"playing...".postln;
 	Synth.new(\sin, [\freq, 110+30.rand], target: server);
+	  Synth.new(\rockingGSM, [\pan, 0.25, \amp, 0.5, \bufnum, gsmBuffer.bufnum], target: server);
+	  Synth.new(\rockingGSM, [\freq, 110*1.5, \amp, 0.5, \pan, -0.25, \bufnum, gsmBuffer.bufnum], target: server);
+	  Synth.new(\rockingGSM, [\freq, 110*2, \amp, 0.5, \pan, -0.5, \bufnum, gsmBuffer.bufnum], target: server);
+
     "Done!".postln;
 });
 

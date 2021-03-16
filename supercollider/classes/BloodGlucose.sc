@@ -182,9 +182,8 @@ BloodGlucose {
 		   	 Pbind.new(
 		   		 \instrument, instrument,
 		   		 \bufnum, Pfunc.new({buffers.choose.bufnum;}), //TODO ÄNDRA DETTA!!!!!!!!
-		   		 \degree, rawPattern,
-		   		 \octave, 4.rand+1,
-				 //Scale.majorPentatonic
+		   		 \degree, Pseq.new(values.linlin(1, 30, 0, 20).round(),  repeats: inf),
+				 \mtranspose, 4.rand*5-10,
 		   		 \pan, 2.0.rand-1.0, //differentiatedPattern,
 				 \resonantAmp, Pwhite.new(0,2.0, inf),
 				 \release, Pwhite.new(0.5,1.5, inf),
@@ -196,7 +195,6 @@ BloodGlucose {
 		    //}, inf)
 		.asEventStreamPlayer.xplay(fadeIn, quant: 1);
 		startTime = player.clock.seconds;
-		{server.meter;}.defer;
 	}
 
 	printOn {

@@ -1,3 +1,5 @@
+
+[1,2,3].linlin(0,20,10,100)
 (
 var randValues2 = Array.fill(100, {arg i; 2.0+28.0.rand;});
 ~randValues2.bSplineInt(1,10)
