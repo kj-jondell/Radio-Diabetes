@@ -37,6 +37,7 @@ SynthDef.new(\sliceBuffer, {
 		var resonator = CombL.ar(signal, delayTime, delayTime, release)*resonantAmp;
 		var combined = (resonator+signal);
 		var panner = Balance2.ar(left: combined[0], right: combined[1],  pos: pan);
+		//Använd detectsilence istället? env endast på resonans....
 		Out.ar(outBus, EnvGen.kr(Env.perc(attackTime: attack, releaseTime: release), doneAction:Done.freeSelf)*Limiter.ar(panner, level: amp));
 	}).add;
 
@@ -56,12 +57,46 @@ SynthDef.new(\gatedBuffer, {
 
 
 SynthDef.new(\sin,  {
-	arg freq = 110, pan=0, release = 1;
-	var sinOsc = SinOsc.ar(freq, mul:0.1)*EnvGen.kr(Env.perc(release: release), doneAction: Done.freeSelf);
+	arg freq = 110, pan=0, release = 1, attack = 0.1;
+	var sinOsc = SinOsc.ar(freq, mul:0.1)*EnvGen.kr(Env.perc(/*attackTime: attack,*/ releaseTime: release), doneAction: Done.freeSelf);
 	Out.ar(0, Pan2.ar(in: sinOsc, pos: pan));
 }).add;
 
+/*
+* TODO Fixa grejer (reverb t.ex....)
+*/
 SynthDef.new(\rockingGSM, {
+	arg bufnum = 0, freq = 110, freq2 = 0.0, freq3 = 0.0, pan = 0.0, amp = 1, amp1 = 1, amp2 = 0.8, amp3 = 0.5, formantPan = 0, gate = 1, attack = 1, release = 5,
+	freqs = #[400, 750, 2400, 2600, 2900], q = #[0.1, 0.107, 0.04, 0.05, 0.05], amps = #[1, 0.28, 0.09, 0.1, 0.01];
+
+	var signal, bandPass, panned, dryPanned, mixed, env;
+
+	 if(freq2==0){
+	   freq2 = freq;
+	 };
+
+	 if(freq3==0){
+	   freq3 = freq;
+	 };
+
+	signal = LPF.ar((PlayBuf.ar(1, bufnum: bufnum,  rate: [freq, freq2, freq3]/155.0, loop: 1,  doneAction: Done.freeSelf)*[amp1, amp2, amp3]).sum, amp.linlin(0, 1.5, 1000, 6000)); //TOOO ändra filter? ?? 
+	bandPass = BBandPass.ar(in: signal,  freq: [freq]++freqs,  bw: [0.1]++q,  mul: ([1]++amps)*8).sum; 
+
+	panned = Pan2.ar(bandPass, pos: pan);
+	dryPanned = Pan2.ar(signal, pos: pan); 
+
+	mixed = XFade2.ar(panned, dryPanned, pan: formantPan);
+	env = EnvGen.ar(Env.adsr(attack, release, amp), gate, doneAction:Done.freeSelf);
+
+	signal = mixed*env;
+	Out.ar(0, XFade2.ar(signal, JPverb.ar(signal, 3.0, damp: 0.4, low: 1.2, high: 1.2, earlyDiff: 0.8), pan: -0.25));
+
+}).add;
+
+/*
+* TODO ta bort...
+*/
+SynthDef.new(\rockingGSMOLD, {
 	arg bufnum = 0, freq = 110, pan = 0, amp = 1;
 	var signal = PlayBuf.ar(2, bufnum: bufnum,  rate: freq/155.0/*,  trigger: 1.0*/, loop: 1,  doneAction: Done.freeSelf);
 	signal = Balance2.ar(left: signal[0], right: signal[1], pos: pan, level: amp);

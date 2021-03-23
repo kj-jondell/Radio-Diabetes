@@ -9,7 +9,7 @@
 *
 */
 
-var debug_ = false;
+var debug_ = true;
 
 var dataPackets = List.new(), enqueuedPackets = List.new();
 var newDataPack;
@@ -67,7 +67,7 @@ var oscFunc = {
 		'/valueDone', {
 		  { // TODO göra en annan funktion för att spela upp hälsningsmeddelanden...
 			  var bufnum = greetingBuffers.choose.bufnum;
-			  PlayBuf.ar(1, bufnum: bufnum, rate: BufRateScale.kr(bufnum), doneAction: Done.freeSelf)!2
+			  PlayBuf.ar(1, bufnum: bufnum, rate: BufRateScale.kr(bufnum), doneAction: Done.freeSelf)*0.5!2
 		  }.play(target: server);
 
 		  newDataPack.createPatterns();
@@ -117,18 +117,42 @@ thisProcess.addOSCRecvFunc(oscFunc);
 
 Require("defs/SynthDefs");
 server.waitForBoot({
+  var synth, pattern; //TODO Temp...
     electricBuffers = SoundFile.collectIntoBuffers(File.getcwd +/+ "defs/media/normalized/*",  server: server);
 	greetingBuffers = SoundFile.collectIntoBuffers(File.getcwd +/+ "/media/tack/*", server: server);
-	gsmBuffer = Buffer.read(server, File.getcwd +/+ "media/häftigGSM.wav");
+	gsmBuffer = Buffer.read(server, File.getcwd +/+ "media/monoGSM.wav");
 
     server.sync;
 
 	"playing...".postln;
-	Synth.new(\sin, [\freq, 110+30.rand], target: server);
-	  Synth.new(\rockingGSM, [\pan, 0.25, \amp, 0.5, \bufnum, gsmBuffer.bufnum], target: server);
-	  Synth.new(\rockingGSM, [\freq, 110*1.5, \amp, 0.5, \pan, -0.25, \bufnum, gsmBuffer.bufnum], target: server);
-	  Synth.new(\rockingGSM, [\freq, 110*2, \amp, 0.5, \pan, -0.5, \bufnum, gsmBuffer.bufnum], target: server);
+	//Synth.new(\sin, [\freq, 110+30.rand], target: server);
 
+	// TODO FLYTTA KOD
+	//synth = Synth.new(\rockingGSM, [\pan, 0, \amp, 1.2, \freq, 130, /*\freq2, 110*1.5, \freq3, 110*0.75,*/ \bufnum, gsmBuffer.bufnum], target: server);
+
+	//// TODO FLYTTA KOD
+ 	//pattern = Penvir(
+	//  (formant: FormantTable.get(FormantTable.keys().choose)),
+	//  Pbind(
+	//	\type, \set,
+	//	\id, synth.nodeID,
+	//	\args, #[\stretch, \freq, \freqs, \amps, \q, \formantPan, \freq2, \freq3, \pan],
+	//	//\octave, 4,
+	//	//\degree, Pseq([1, 2, 4, 0], inf),
+	//	\freq, Pseq([1.1, 1.25, 1.5, 1]*131, inf),
+	//	//\freq, Pseq([110, 125, 150, 100], inf),
+	//	\dur, Pwrand.new([1.5, 1, 1.25, 1.75]*2,  weights: [1, 3, 1, 0].normalizeSum,  repeats: 4*64),
+	//	\formant, Pfunc({~formant = FormantTable.get(FormantTable.keys().choose)}),
+	//	\freqs, Pfunc({[~formant[0]]}),
+	//	\amps, Pfunc({[~formant[1]]}),
+	//	\q, Pfunc({[~formant[2]]}),
+	//	//\pan, Pwhite(-0.25,0.25,inf),
+	//	 \freq2, (Pkey(\freq)*Prand([0.5, 1, 2], inf)),
+	//	 \freq3, (Pkey(\freq)*Prand([3/4, 4/3, 1.5], inf)),
+	//	 \server, server,
+	//	\formantPan, Pwhite.new(lo: -0.25,  hi: 0.25,  length: inf)
+	//  )
+	//).play(quant: 1);
     "Done!".postln;
 });
 

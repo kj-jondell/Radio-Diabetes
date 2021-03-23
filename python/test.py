@@ -10,7 +10,7 @@ spl = BSpline(times, values, 1)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--ip", default="127.0.0.1")
-parser.add_argument("--port", default=57120)
+parser.add_argument("--port", default=57121)
 
 args = parser.parse_args()
 client = udp_client.SimpleUDPClient(args.ip, args.port)

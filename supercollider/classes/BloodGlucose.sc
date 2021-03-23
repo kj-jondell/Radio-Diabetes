@@ -7,6 +7,7 @@ BloodGlucose {
 	*/
 	var server, cleanupFunction, <>register, <>key, <>scale, <>position, <>soundSource, <>metaData, <player, <startTime = 0, isCleaned = false, >hasWaiting = false, localMinTime = 0;
 	var <>typeOfFunction = "";
+	var differentiated;
 	classvar points, values, index, rawPattern, differentiatedPattern;
 	classvar debug = false;
 
@@ -109,14 +110,13 @@ BloodGlucose {
 	*/
 	createPatterns {
 		arg repeats = inf;
-		var differentiated;
 
 		values = points.collect({arg point; point.y});
 
 		differentiated = this.prGetDifferentiated(values, order: 1, scale: 5); 
 
-		rawPattern = Pseq.new(values.round(), repeats);
-		differentiatedPattern = Pseq.new(differentiated, repeats);
+		rawPattern = Pseq.new(values.round(), repeats); //tabort...
+		differentiatedPattern = Pseq.new(differentiated, repeats); //tabort...
 
 		metaData = Dictionary.newFrom([\mean, values.mean, \max, values.maxItem, \min, values.minItem, \stdDev, values.stdDev, \variance, values.variance, \geoMean, values.geoMean, \autocorr, values.autocorr]); //TODO räkna ut allt på en gång eller när det används?
 
@@ -181,12 +181,14 @@ BloodGlucose {
 		    //Plazy {
 		   	 Pbind.new(
 		   		 \instrument, instrument,
+				 \attack, Pwhite(0.0,0.2,inf),
 		   		 \bufnum, Pfunc.new({buffers.choose.bufnum;}), //TODO ÄNDRA DETTA!!!!!!!!
-		   		 \degree, Pseq.new(values.linlin(1, 30, 0, 20).round(),  repeats: inf),
+		   		 \degree, Pseq.new(values.linlin(1, 30, 0, 20).round(),  repeats: inf), //omfång..? 
 				 \mtranspose, 4.rand*5-10,
-		   		 \pan, 2.0.rand-1.0, //differentiatedPattern,
-				 \resonantAmp, Pwhite.new(0,2.0, inf),
-				 \release, Pwhite.new(0.5,1.5, inf),
+				 \ctranspose, Pfunc({0.02.coin.asInteger*2}), // är detta ok... ?? låta metadata styra sannolikheten??
+				 \release, Pseq(differentiated.normalize*3.9+0.1, inf), //TODO använda någon annan signal kanske?
+		   		 \pan, 2.0.rand-1.0, 
+				 \resonantAmp, Pexprand(0.1,0.4,inf),
 		   		 \scale, scale,
 		   		 \callback, {this.prCallback(maxTime, fadeOut);},
 		   		 \server, server, //TODO VIKTIG!!

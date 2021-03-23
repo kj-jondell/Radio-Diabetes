@@ -139,3 +139,66 @@ SynthDef.new(
   }
 ).add; //TODO använd 'writeDefFile' i framtiden...
 )
+
+s.reboot
+(
+
+Pbind.new(
+  //\freq, Pseq([110, 125, 150, 100], 4), 
+  \octave, 3,
+  //\ctranspose, -7,
+  \degree, Pseq([1, 2, 4, 0], 4),
+  \dur, Pseq([0.25], 16)
+).play
+)
+
+
+~electricBuffers = SoundFile.collectIntoBuffers(File.getcwd +/+ "../defs/media/normalized/*",  server: s);
+File.getcwd
+~scale=3;
+~tonicScale = Scale.majorPentatonic;
+~tonicScale.tuning(\just);
+s.boot
+(
+x = Pbind(
+  \instrument, \sliceBuffer,
+  \attack, Pwhite(0.0,0.2,inf),
+  \octave, 4,
+  \degree, Prand([0,1,2,3,4,5], inf),
+  \pan, Pwhite(-0.5,0.5,inf),
+  \scale, ~tonicScale,
+  \ctranspose, Pfunc({var flip=0.01.coin.asInteger;if(flip==1){"transpose!".postln;};flip*2;}),
+  \release, Pseq([0.1, 0.1, 0.1, 0.5, 0.75, 0.8, 1.2, 1.5, 3]*~scale,inf),
+  \resonantAmp, Pexprand(0.1,0.4,inf),
+  \dur, Pseq(0.5*[0.25,0.25, 0.25],inf),
+  \bufnum, Pfunc({~electricBuffers.choose})
+).play(quant: 1);
+)
+~tonicScale.tuning_(\ET12)
+~tonicScale.tuning_(\just)
+~tonicScale.degreeToFreq(3, 130.813, 0);
+10*(0.5.coin.asInteger)
+
+Synth.new(\sliceBuffer, [\bufnum, ~electricBuffers.choose]);
+(
+x.stop;
+s.queryAllNodes
+)
+s.freeAll
+
+(
+SynthDef.new(\sliceBuffer, {
+  arg bufnum = 0, rate = 1, pan = 0, outBus = 0, amp = 0.5, attack = 0.01, release = 0.8, freq = 220, resonantAmp = 0.25;
+  var signal = PlayBuf.ar(2, bufnum, rate*BufRateScale.kr(bufnum)/*, doneAction:Done.freeSelf*/);
+  var delayTime = 1 / (freq);
+  var resonator = CombL.ar(signal, delayTime, delayTime, release)*resonantAmp/*, doneAction:Done.freeSelf*/;
+  var combined = (resonator+signal)*EnvGen.kr(Env.perc(attackTime: attack, releaseTime: release));
+  var panner = LeakDC.ar(Balance2.ar(left: combined[0], right: combined[1],  pos: pan));
+  DetectSilence.ar(panner,  time: 1,  doneAction: Done.freeSelf);
+
+  //Använd detectsilence istället? env endast på resonans....
+  Out.ar(outBus, Limiter.ar(panner, level: amp));
+}).add;
+)
+
+[-10,1,2,3,4].normalize
