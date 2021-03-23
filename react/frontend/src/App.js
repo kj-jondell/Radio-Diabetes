@@ -1,9 +1,12 @@
 import axios from 'axios';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
 
 import Header from './Header'
 
-let radio = new Audio("http://192.168.0.104:8000/listen");
+let radio =
+    new Audio("http://192.168.0.104:8000/listen"); // TODO fixa address...
 
 function Hem(props) { return (<div><h2>Hem</h2>
     </div>); }
@@ -11,18 +14,21 @@ function Hem(props) { return (<div><h2>Hem</h2>
 /*
  * Gör om till en egen klass...
  */
-function Uppladdning(props) {
-  let file;
+class Uppladdning extends React.Component {
+  onFileChange = event => {
+    this.file = event.target.files[0];
+    this.onUserSubmit(); // TODO ta bort ??? auto-submit...
+  };
 
-  let onFileChange = event => { file = event.target.files[0]; };
-
-  let onUserSubmit = event => {
-    event.preventDefault();
+  onUserSubmit = event => {
+    if (event != null)
+      event.preventDefault();
+    // TODO lägg till begränsa storlek på fil!
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", this.file);
     axios.post("/api/uppladdning", formData).then(respons => {
       if (respons.data['uploadSuccess']) {
-        props.history.push('/lyssna');
+        this.props.history.push('/lyssna');
         if (radio.paused)
           radio.play();
       }
@@ -30,11 +36,15 @@ function Uppladdning(props) {
     return false;
   };
 
-  return (<div><form onSubmit = {onUserSubmit}>
-          <input type = "file" onChange = {onFileChange} accept =
-               ".xls, .xlsx, .csv" /><input type = "submit" value = "Skicka" />
-          </form>
-  </div>);
+  constructor(props) { super(props); }
+
+  render() {
+    return (<div><form onSubmit = {this.onUserSubmit}>
+            <input type = "file" onChange = {this.onFileChange} accept =
+                 ".xls, .xlsx, .csv" /></form>
+	  </div>)
+  }
+  //<input type = "submit" value = "Skicka" />
 }
 
 const Om = () => (<div><h2>Om</h2>
@@ -54,7 +64,6 @@ function Lyssna(props) {
 }
 
 function App() {
-
   const start = () => {
     radio.play();
   }
