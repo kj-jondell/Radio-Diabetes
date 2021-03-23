@@ -5,19 +5,19 @@ BloodGlucose {
 	*	- scale: a Scale defining scale that will be played by this object
 	*	- soundSource: a Symbol containing name of SynthDef associated to this object
 	*/
-	var server, cleanupFunction, <>register, <>key, <>scale, <>position, <>soundSource, <>metaData, <player, <startTime = 0, isCleaned = false, >hasWaiting = false, localMinTime = 0;
+	var server, cleanupFunction, electricBuffers, <>register, <>key, <>scale, <>position, <>soundSource, <>metaData, <player, <startTime = 0, isCleaned = false, >hasWaiting = false, localMinTime = 0;
 	var <>typeOfFunction = "";
 	var differentiated;
-	classvar points, values, index, rawPattern, differentiatedPattern;
+	classvar points, values, index;
 	classvar debug = false;
 
     *new {
-		arg server_, cleanup_;
+		arg server_, cleanup_, electricBuffers_;
 		index = 0;
 		values = List.new();
 		points = List.new();
 
-        ^super.newCopyArgs(server_, cleanup_);
+        ^super.newCopyArgs(server_, cleanup_, electricBuffers_);
 	}
 
 	/**
@@ -64,7 +64,7 @@ BloodGlucose {
 	  ///values.plot;
 	}
 
-	/*
+	/**
 	*
 	* Adds new value received from OSC
 	*
@@ -84,7 +84,7 @@ BloodGlucose {
 		values = values.add(value);
 	}
 
-	/*
+	/**
 	* TODO: reconsider... Tuning should possibly be defined in Scale-object assigned to this object.
 	*/
 	setTuning {
@@ -105,29 +105,17 @@ BloodGlucose {
 			{^differentiated;}
 	}
 
-	/*
-	* TODO rename?
+	/**
+	* TODO rename? 
 	*/
 	createPatterns {
 		arg repeats = inf;
 
-		values = points.collect({arg point; point.y});
+		values = points.collect({arg point; point.y}); //behåll (viktig!)
 
-		differentiated = this.prGetDifferentiated(values, order: 1, scale: 5); 
-
-		rawPattern = Pseq.new(values.round(), repeats); //tabort...
-		differentiatedPattern = Pseq.new(differentiated, repeats); //tabort...
+		differentiated = this.prGetDifferentiated(values, order: 1, scale: 5); //behåll?
 
 		metaData = Dictionary.newFrom([\mean, values.mean, \max, values.maxItem, \min, values.minItem, \stdDev, values.stdDev, \variance, values.variance, \geoMean, values.geoMean, \autocorr, values.autocorr]); //TODO räkna ut allt på en gång eller när det används?
-
-		if(debug){
-			[values.mean,values.maxItem,values.minItem,values.stdDev,values.variance,values.geoMean,values.autocorr].do({
-				arg value;
-				value.postln;
-			});
-
-			server.postln;
-		}
 	}
 
 	/*
@@ -167,41 +155,35 @@ BloodGlucose {
 	*/
 	play {
 		//TODO definiera dessa när objekt skapas?
-		arg buffers, fadeIn = 10, maxTime = 10, minTime = 0, fadeOut = 10, octave = 0, instrument = \sliceBuffer;
-		//var octave = metaData[\mean].linlin(7.0, 13.0, 0, 2).round();
-
-		//var root = 2.rand*5-10;
+		arg fadeIn = 10, maxTime = 10, minTime = 0, fadeOut = 10, instrument = \sliceBuffer;
 
 		var scale = Scale.majorPentatonic;
 		scale.tuning(\just);
 
 		localMinTime = minTime;
 
-		player = // Pn( 
-		    //Plazy {
-		   	 Pbind.new(
-		   		 \instrument, instrument,
-				 \attack, Pwhite(0.0,0.2,inf),
-		   		 \bufnum, Pfunc.new({buffers.choose.bufnum;}), //TODO ÄNDRA DETTA!!!!!!!!
-		   		 \degree, Pseq.new(values.linlin(1, 30, 0, 20).round(),  repeats: inf), //omfång..? 
-				 \mtranspose, 4.rand*5-10,
-				 \ctranspose, Pfunc({0.02.coin.asInteger*2}), // är detta ok... ?? låta metadata styra sannolikheten??
-				 \release, Pseq(differentiated.normalize*3.9+0.1, inf), //TODO använda någon annan signal kanske?
-		   		 \pan, 2.0.rand-1.0, 
-				 \resonantAmp, Pexprand(0.1,0.4,inf),
-		   		 \scale, scale,
-		   		 \callback, {this.prCallback(maxTime, fadeOut);},
-		   		 \server, server, //TODO VIKTIG!!
-		   		 \dur, Pwrand.new([1/4, 1/8/*, 1/16, Rest(1/4)*/], [6, 2/*, 0.5, 1*/].normalizeSum, inf) 
+		player = Pbind.new ( //electric buffers
+				   \instrument, instrument,
+				   \attack, Pwhite(0.0,0.2,inf),
+				   \bufnum, Pfunc.new({electricBuffers.choose.bufnum;}), //TODO ÄNDRA DETTA!!!!!!!!
+				   \degree, Pseq.new(values.linlin(1, 30, 0, 20).round(),  repeats: inf), //omfång..? 
+				   \mtranspose, 4.rand*5-10,
+				   \ctranspose, Pfunc({0.02.coin.asInteger*2}), // är detta ok... ?? låta metadata styra sannolikheten??
+				   \release, Pseq(differentiated.normalize*3.9+0.1, inf), //TODO använda någon annan signal kanske?
+				   \pan, 2.0.rand-1.0, 
+				   \resonantAmp, Pexprand(0.1,0.4,inf),
+				   \scale, scale,
+				   \callback, {this.prCallback(maxTime, fadeOut);},
+				   \server, server, //TODO VIKTIG!!
+				   \dur, Pwrand.new([1/4, 1/8/*, 1/16, Rest(1/4)*/], [6, 2/*, 0.5, 1*/].normalizeSum, inf) 
 		   	 )
-		    //}, inf)
 		.asEventStreamPlayer.xplay(fadeIn, quant: 1);
 		startTime = player.clock.seconds;
 	}
 
 	printOn {
 		arg stream;
-		stream << "BloodGlucose( " << values << ", " << rawPattern <<" )";
+		stream << "BloodGlucose( " << values << " )";
 	}
 
 }

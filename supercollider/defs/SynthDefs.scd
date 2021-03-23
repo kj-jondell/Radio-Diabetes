@@ -79,7 +79,7 @@ SynthDef.new(\rockingGSM, {
 	   freq3 = freq;
 	 };
 
-	signal = LPF.ar((PlayBuf.ar(1, bufnum: bufnum,  rate: [freq, freq2, freq3]/155.0, loop: 1,  doneAction: Done.freeSelf)*[amp1, amp2, amp3]).sum, amp.linlin(0, 1.5, 1000, 6000)); //TOOO ändra filter? ?? 
+	signal = LPF.ar((PlayBuf.ar(1, bufnum: bufnum,  rate: [freq, freq2, freq3]/155.0, loop: 1,  doneAction: Done.freeSelf)*[amp1, amp2, amp3]).sum, amp.linlin(0, 1.5, 1000, 6000)); //TODO ändra filter? ?? 
 	bandPass = BBandPass.ar(in: signal,  freq: [freq]++freqs,  bw: [0.1]++q,  mul: ([1]++amps)*8).sum; 
 
 	panned = Pan2.ar(bandPass, pos: pan);
@@ -91,14 +91,4 @@ SynthDef.new(\rockingGSM, {
 	signal = mixed*env;
 	Out.ar(0, XFade2.ar(signal, JPverb.ar(signal, 3.0, damp: 0.4, low: 1.2, high: 1.2, earlyDiff: 0.8), pan: -0.25));
 
-}).add;
-
-/*
-* TODO ta bort...
-*/
-SynthDef.new(\rockingGSMOLD, {
-	arg bufnum = 0, freq = 110, pan = 0, amp = 1;
-	var signal = PlayBuf.ar(2, bufnum: bufnum,  rate: freq/155.0/*,  trigger: 1.0*/, loop: 1,  doneAction: Done.freeSelf);
-	signal = Balance2.ar(left: signal[0], right: signal[1], pos: pan, level: amp);
-	Out.ar(0, signal);
 }).add;
