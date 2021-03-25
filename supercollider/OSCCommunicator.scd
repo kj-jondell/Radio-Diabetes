@@ -9,7 +9,7 @@
 *
 */
 
-var debug_ = false;
+var debug_ = false; // denna variabel styr om jag kör från min mac ("true") eller ubuntu ("false")
 
 var dataPackets = List.new(), enqueuedPackets = List.new();
 var newDataPack;
