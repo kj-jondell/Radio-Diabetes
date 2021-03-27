@@ -240,10 +240,10 @@ BloodGlucose {
 	* TODO IMPLEMENT
 	*/
 	futurePlay2 {
-		// TODO FLYTTA KOD
+		arg gsmBuffer;
+		var synth, pattern;
 		synth = Synth.new(\rockingGSM, [\attack, 25, \pan, 0, \amp, 1.2, \freq, 130, /*\freq2, 110*1.5, \freq3, 110*0.75,*/ \bufnum, gsmBuffer.bufnum], target: server);
 
-		//// TODO FLYTTA KOD
 		pattern = Penvir(
 			(formant: FormantTable.get(FormantTable.keys().choose)),
 			Pbind(
@@ -269,18 +269,18 @@ BloodGlucose {
 	*/
 	futurePlay3 {
 		/* TODO FLYTTA DETTA TILL BLOOD GLUCOSE KLASS */
-		var array = newDataPack.wavetableCreator(newDataPack.createInterpolated(0,500), 1024, server);
-
-		/**
-		*
-		* TODO gör om till pbind...
-		*
-		*/
-		Routine.run{
-			server.sync;
-			3.do({
-				Synth.new(\Diabetes, [\freq, Scale.majorPentatonic.degreeToFreq(10.rand, 110, 0), \detuneFactor, 1.5, \orderSize, array.size, \velocity, 30, \flutter, 0.000001, \bufferNum, array[0].bufnum], target: server);
-			});
-		};
+//		var array = newDataPack.wavetableCreator(newDataPack.createInterpolated(0,500), 1024, server);
+//
+//		/**
+//		*
+//		* TODO gör om till pbind...
+//		*
+//		*/
+//		Routine.run{
+//			server.sync;
+//			3.do({
+//				Synth.new(\Diabetes, [\freq, Scale.majorPentatonic.degreeToFreq(10.rand, 110, 0), \detuneFactor, 1.5, \orderSize, array.size, \velocity, 30, \flutter, 0.000001, \bufferNum, array[0].bufnum], target: server);
+//			});
+//		};
 	}
 }

@@ -89,7 +89,7 @@ SynthDef.new(\rockingGSM, {
 	env = EnvGen.ar(Env.adsr(attackTime: attack, releaseTime: release, sustainLevel: amp), gate, doneAction:Done.freeSelf);
 
 	signal = mixed*env;
-	Out.ar(0, XFade2.ar(signal, JPverb.ar(signal, 3.0, damp: 0.4, low: 1.2, high: 1.2, earlyDiff: 0.8), pan: -0.25));
+	Out.ar(0, XFade2.ar(signal, JPverb.ar(signal, 3.0, damp: 0.4, low: 1.2, high: 1.2, earlyDiff: 0.8), pan: -0.25)); //TODO FLYTTA REVERB!!!
 
 }).add;
 
@@ -97,16 +97,18 @@ SynthDef.new(\rockingGSM, {
 SynthDef.new(\inductionSelf, {
 	arg numFrames, start, bufnum = 0, freq = 110, pan = 0.0, amp = 1, gate = 1, attack = 1, release = 5, cutoffFactor = 4, level = 1.0;
 
-	var signal, env;
+	var signal, env, freqAttackMod = 0;
 
-	signal = PlayBuf.ar(2, bufnum: bufnum, startPos: start*numFrames,  rate: freq/100.0, loop: 1);
-	env = EnvGen.ar(Env.perc(attackTime: attack, releaseTime: release)/*Env.adsr(attackTime: attack, releaseTime: release, sustainLevel: 1.0)*/);
+	signal = PlayBuf.ar(2, bufnum: bufnum, startPos: start*numFrames,  rate: (/*freqAttackMod*EnvGen.kr(Env.perc(attackTime: 0, releaseTime: 0.01))+*/freq)/100.0, loop: 0);
+	env = EnvGen.ar(/*Env.perc(attackTime: attack, releaseTime: release)*/Env.adsr(attackTime: attack, releaseTime: release, sustainLevel: 1.0), gate: gate, doneAction: Done.freeSelf);
 
 	signal = signal*env;
-	signal = LPF.ar(signal,  freq: (freq+(EnvGen.kr(Env.perc(attackTime:0,releaseTime:release/cutoffFactor.linlin(1,20,10,1)), levelBias: 1)*freq*cutoffFactor)).clip(1,20000), mul: 1.0,  add: 0.0);
+	signal = LPF.ar(signal,  freq: (freq+(EnvGen.kr(Env.perc(attackTime:0,releaseTime:release/cutoffFactor.linlin(1,20,10,1)), levelBias: 1)*freq*cutoffFactor)).clip(1,20000), mul: 1.0, add: 0.0);
+	signal = signal+Ringz.ar(signal,  freq: (5.rand+3)*freq, mul: 0.002.rand, decaytime: release/4, add: 0.0);
 	signal = Balance2.ar(left: signal[0], right: signal[1], pos: pan, level: level);
-	//signal = signal+[CombL.ar(signal[0], 0.5, 0.125, 1), CombL.ar(signal[1], 0.5, 0.123+SinOsc.kr(1, mul: 0.002), 1)]*0.35;
+
 	DetectSilence.ar(signal,  amp: 0.0001,  time: 1,  doneAction: Done.freeSelf);
 	Out.ar(0, signal);
+
 }).add;
 
