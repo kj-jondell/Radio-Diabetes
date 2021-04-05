@@ -1,0 +1,7 @@
+includePaths:
+    -   /root/diabetes-radio/Examensprojekt-kod/supercollider/classes
+    -   /root/.local/share/SuperCollider/downloaded-quarks/Require
+    -   /root/.local/share/SuperCollider/downloaded-quarks/MathLib
+excludePaths:
+    []
+postInlineWarnings: false
