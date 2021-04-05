@@ -269,6 +269,7 @@ BloodGlucose {
 				\formantPan, Pwhite.new(lo: -0.25,  hi: 0.25,  length: inf)
 			)
 		).play(quant: 1);
+		// TODO ANVÄNDA ROUTINE ISTÄLLET?
 
 	}
 /**

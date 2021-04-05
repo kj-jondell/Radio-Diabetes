@@ -97,10 +97,10 @@ SynthDef.new(\rockingGSM, {
 SynthDef.new(\inductionSelf, {
 	arg numFrames, start, bufnum = 0, freq = 110, pan = 0.0, amp = 1, gate = 1, attack = 1, release = 5, cutoffFactor = 4, level = 1.0;
 
-	var signal, env, freqAttackMod = 0;
+	var signal, env;
 
-	signal = PlayBuf.ar(2, bufnum: bufnum, startPos: start*numFrames,  rate: (/*freqAttackMod*EnvGen.kr(Env.perc(attackTime: 0, releaseTime: 0.01))+*/freq)/100.0, loop: 0);
-	env = EnvGen.ar(/*Env.perc(attackTime: attack, releaseTime: release)*/Env.adsr(attackTime: attack, releaseTime: release, sustainLevel: 1.0), gate: gate, doneAction: Done.freeSelf);
+	signal = PlayBuf.ar(2, bufnum: bufnum, startPos: start*numFrames,  rate: freq/100.0, loop: 0);
+	env = EnvGen.ar(Env.adsr(attackTime: attack, releaseTime: release, sustainLevel: 1.0), gate: gate, doneAction: Done.freeSelf);
 
 	signal = signal*env;
 	signal = LPF.ar(signal,  freq: (freq+(EnvGen.kr(Env.perc(attackTime:0,releaseTime:release/cutoffFactor.linlin(1,20,10,1)), levelBias: 1)*freq*cutoffFactor)).clip(1,20000), mul: 1.0, add: 0.0);
