@@ -14,6 +14,7 @@ from pythonosc import udp_client
 import os
 
 app = Flask(__name__)
+#app = Flask(__name__, static_folder='../react/frontend/build', static_url_path='/')
 app.secret_key = os.urandom(42)
 app.debug = True
 dataSender = DataSender()
@@ -31,6 +32,10 @@ def upload():
     except:
 
         return {'uploadSuccess' : False}
+
+#@app.route('/')
+#def index():
+#    return app.send_static_file('index.html')
 
 if __name__ == '__main__':
     app.run(debug = True)

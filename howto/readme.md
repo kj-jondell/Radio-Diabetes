@@ -5,7 +5,8 @@
 Starta SuperCollider med `sclang OSCCommunicator.scd -l sclang_conf.yaml`  
 ## Jack
 
-Starta jack m.h.a `jackd -R -n scjack -d dummy -C 0 -P 0 -p 256`
+Starta jack m.h.a `jackd -R -n scjack -d dummy -C 0 -P 0 -p 512`
+(där `-p` är frames per period)
 
 ## Icecast
 

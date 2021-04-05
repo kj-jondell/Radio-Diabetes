@@ -1,7 +1,7 @@
 1. Starta icecast2 (server, borde vara alltid "på")
 	`sudo systemctl status icecast2` (byt ut status till "start" om den inte är igång...)
 2. Starta jack daemon
-	`jackd -R -n scjack -d dummy -C 0 -P 0 -p 256 &` (använd t.ex. ´jack_lsp -s scjack` för felsökning)
+	`jackd -R -n scjack -d dummy -C 0 -P 0 -p 512 &` (använd t.ex. ´jack_lsp -s scjack` för felsökning)
 3. Starta darkice
 	`darkice -c .darkice.cfg &`
 4. Starta react:
