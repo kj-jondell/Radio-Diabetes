@@ -6,7 +6,7 @@ import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom';
 import Header from './Header'
 
 let radio =
-    new Audio("https://radiodiabetes.eu:8443/listen"); // TODO fixa address...
+    new Audio("https://stream.radiodiabetes.eu/"); 
 
 function Hem(props) { return (<div><h2>Hem</h2>
     </div>); }
