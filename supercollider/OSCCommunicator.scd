@@ -103,6 +103,7 @@ var oscFunc = {
 if(debug_ == false){
   serverOptions.device = "scjack:supercollider";
   serverOptions.numInputBusChannels = 0;
+  serverOptions.verbosity = -1;
 
   "SC_JACK_DEFAULT_INPUTS".setenv();
   "SC_JACK_DEFAULT_OUTPUTS".setenv("diabetes-radio"); 
