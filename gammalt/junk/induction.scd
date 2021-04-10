@@ -1,4 +1,5 @@
 s.boot;
+Server.killAll
 (
 )
 (
@@ -36,7 +37,7 @@ s.boot;
 )
 
 s.reboot;
-~buffer = Buffer.read(s, "induktion-sc.wav");
+~buffer = Buffer.read(s, "/Users/kj/induktion-sc.wav");
 Server.killAll
 s.freeAll;
 
@@ -90,9 +91,12 @@ s.freeAll;
 		\dur, [1/4, 1/5, 1/7].wchoose([0, 15, 15].normalizeSum)
 	);
 	parA.play;
-	parB.play;
+	//parB.play;
 	//Ppar([parA, parB]).play;
 )
+s.options.verbosity = -1;
+"hello".postln;
+s.reboot
 	~parA.play(quant: 1);
 [1,[1,2],3].stutter(2)
 
