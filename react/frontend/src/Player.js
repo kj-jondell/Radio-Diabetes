@@ -1,32 +1,34 @@
-import { Link, useParams } from 'react-router-dom';
-import React from 'react';
-//import Button from 'sanity-ui'
-import './Player.css';
+import React from "react";
+import "./Player.css";
+import { Button, Card, Inline, Text } from "@sanity/ui";
+import { PauseIcon, PlayIcon } from "@sanity/icons";
+import { usePlayContext } from "./context";
 
-class Player extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {value: "Spela"};
+export function Player() {
+  const { getIsPlaying, setIsPlaying } = usePlayContext();
 
-    }
+  const color = getIsPlaying ? "green" : "red";
 
-    render() {
-        return (
-            <div className="playbar">
-                <p>Live</p>
-            </div>
-        );
-      }
-}
+  const style = {
+    backgroundColor: color,
+    borderRadius: "50%",
+    width: 10,
+    height: 10,
+  };
 
-export default Player;
+  return (
+    <div className="playbar">
+      <Inline space={2}>
+        <Card padding={2} tone="critical" style={style} />
+        <Text style={{ color: color }} weight="semibold">
+          Live
+        </Text>
+      </Inline>
 
-
-
-function Player(){
-
-    return (
-
-    )
-
+      <Button
+        icon={getIsPlaying ? PauseIcon : PlayIcon}
+        onClick={() => setIsPlaying(!getIsPlaying)}
+      />
+    </div>
+  );
 }
