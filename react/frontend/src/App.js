@@ -1,15 +1,14 @@
 // import axios from "axios";
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import {BrowserRouter as Router, Route} from "react-router-dom";
 
-import { Player } from "./Player";
 import Header from "./Header";
-
-import { About, Contact, Home, Upload, Success } from "./views";
+import {Player} from "./Player";
+import {About, Contact, Home, Success, Upload} from "./views";
 
 // let radio = new Audio("https://stream.radiodiabetes.eu/");
 
-//function Hem(props) { return (<div><h2>Hem</h2>
+// function Hem(props) { return (<div><h2>Hem</h2>
 //    </div>); }
 
 /*
@@ -66,7 +65,7 @@ function App() {
         <Route exact path="/" component={Home}></Route>
         <Route exact path="/om" component={About}></Route>
         {/* <Route exact path="/uppladdning" component={Uppladdning}></Route> */}
-        <Route exact path="/upload" component={Upload}></Route>
+        <Route exact path="/uppladdning" component={Upload}></Route>
         <Route exact path="/kontakt" component={Contact}></Route>
         <Route exact path="/success" component={Success}></Route>
       </Router>

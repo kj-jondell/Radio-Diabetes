@@ -1,28 +1,30 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import {createContext, useContext, useEffect, useMemo, useState} from "react";
 
 const PlayContext = createContext(false);
 
-export function PlayProvider({ children }) {
+export function PlayProvider({children}) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const radio = useMemo(
-    () => new Audio("https://stream.radiodiabetes.eu/"),
-    []
-  );
+  const radio =
+      useMemo(() => new Audio("https://stream.radiodiabetes.eu/"), []);
 
   const value = {
-    setIsPlaying: setIsPlaying,
-    getIsPlaying: isPlaying,
+    setIsPlaying : setIsPlaying,
+    getIsPlaying : isPlaying,
   };
 
   useEffect(() => {
     if (isPlaying) {
-      radio.play();
+      radio.src = "https://stream.radiodiabetes.eu/";
+      radio.play(); // TODO sätta volym till 1 istället? eller synca på annat
+                    // sätt...
     } else {
-      radio.pause();
+      radio.pause(); // TODO sätta volym till 0 istället? eller synca på annat
+                     // sätt...
     }
-  }, [isPlaying, radio]);
+  }, [ isPlaying, radio ]);
 
-  return <PlayContext.Provider value={value}>{children}</PlayContext.Provider>;
+  return <PlayContext.Provider value = {value}>{children} <
+         /PlayContext.Provider>;
 }
 
 export const usePlayContext = () => useContext(PlayContext);
