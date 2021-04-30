@@ -11,7 +11,7 @@ from dateutil import parser
 # AMT_OUTPUT = 10
 BUFFER_SIZE = 2048
 ROW_OFFSET = 5
-SHEET_NO = 1
+#SHEET_NO = 1
 
 class Parser():
 
@@ -45,7 +45,14 @@ class Parser():
         
     """ Tolkar excel data """
     def parse_data(self, user_file):
-        sheet = xlrd.open_workbook(file_contents=user_file).sheet_by_index(SHEET_NO)
+        #sheet = xlrd.open_workbook(file_contents=user_file).sheet_by_index(SHEET_NO)
+        for sheet_no in [1,0,2,3,4]:
+            try:
+                sheet = xlrd.open_workbook(user_file).sheet_by_index(sheet_no)
+                break
+            except IndexError:
+                pass
+
         amt_data = sheet.nrows - ROW_OFFSET
         base_time = 0
         times = []
