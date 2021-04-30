@@ -48,7 +48,7 @@ class Parser():
         #sheet = xlrd.open_workbook(file_contents=user_file).sheet_by_index(SHEET_NO)
         for sheet_no in [1,0,2,3,4]:
             try:
-                sheet = xlrd.open_workbook(user_file).sheet_by_index(sheet_no)
+                sheet = xlrd.open_workbook(file_contents=user_file).sheet_by_index(sheet_no)
                 break
             except IndexError:
                 pass
