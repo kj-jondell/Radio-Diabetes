@@ -62,7 +62,7 @@ function App() {
         <Header />
         <Route path="/:page" component={Player}></Route>
         <Route exact path="/" component={Player}></Route>
-        <Route exact path="/" component={Home}></Route>
+        <Route exact path="/" component={About}></Route>
         <Route exact path="/om" component={About}></Route>
         {/* <Route exact path="/uppladdning" component={Uppladdning}></Route> */}
         <Route exact path="/uppladdning" component={Upload}></Route>

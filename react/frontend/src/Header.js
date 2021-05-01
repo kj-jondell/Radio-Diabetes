@@ -18,7 +18,7 @@ const Header = () => {
         <HeaderLink page="om"></HeaderLink>
         {/*<HeaderLink page="uppladdning"></HeaderLink>*/}
         <HeaderLink page="uppladdning"></HeaderLink>
-        <HeaderLink page="kontakt"></HeaderLink>
+        {/*<HeaderLink page="kontakt"></HeaderLink>*/}
       </div>
     </div>
   );
