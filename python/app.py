@@ -33,6 +33,7 @@ def upload():
         output_folder = "messages"
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
+            print(os.path)
 
         if len(message)>0:
             with open(f"{output_folder}/{datetime.datetime.now().strftime('%Y%m%d-%H_%M_%S')}.txt", "w") as message_file:
