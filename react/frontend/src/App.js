@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Header from "./Header";
 import { Player } from "./Player";
-import { About, Contact, Home, Success, Upload } from "./views";
+import { About, Upload } from "./views";
 
 // let radio = new Audio("https://stream.radiodiabetes.eu/");
 

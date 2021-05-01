@@ -1,5 +1,13 @@
 import { isMobile } from "react-device-detect";
-import { Button, Box, Checkbox, Flex, Text, useToast } from "@sanity/ui";
+import {
+  TextArea,
+  Button,
+  Box,
+  Checkbox,
+  Flex,
+  Text,
+  useToast,
+} from "@sanity/ui";
 import "./upload.css";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -15,26 +23,41 @@ import image4 from "../images/nr_4.png";
 import image5 from "../images/nr_5.png";
 
 export function Upload() {
+  const [formMessage, setMessage] = useState("");
   const [file, setFile] = useState(null);
+  const [formData, setFormData] = useState(null);
   const [success, setSuccess] = useState(false);
   const { setIsPlaying, getIsPlaying, setAudioRef } = usePlayContext();
   const { push } = useToast();
   const [disabled, setDisabled] = useState(true);
+  const [hasFile, setHasFile] = useState(false);
+
+  const handleTextChange = (event) => {
+    setMessage(event.currentTarget.value);
+  };
 
   const handleDisabled = (event) => {
     setDisabled(!event.currentTarget.checked);
   };
 
+  const onFormSubmit = (event) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("message", formMessage);
+
+    setFormData(formData);
+  };
+
   const onFileChange = (event) => {
     const fileToUpload = event.target.files[0];
     setFile(fileToUpload);
+    setHasFile(true);
   };
 
   useEffect(() => {
-    if (!file) return;
-    const formData = new FormData();
-
-    formData.append("file", file);
+    if (!formData) return;
     axios
       .post("/api/uppladdning", formData)
       .then((response) => {
@@ -45,7 +68,6 @@ export function Upload() {
             description: "Ditt bidrag har mottagits!",
             status: "success",
           });
-
           if (!isMobile) {
             if (!getIsPlaying) {
               setIsPlaying(true);
@@ -61,7 +83,7 @@ export function Upload() {
         });
       });
     return false;
-  }, [file, getIsPlaying, push, setIsPlaying, setAudioRef]);
+  }, [formData, getIsPlaying, push, setIsPlaying, setAudioRef]);
 
   if (success && !isMobile) {
     return <Redirect to="/" />;
@@ -72,7 +94,12 @@ export function Upload() {
       {/*getIsPlaying ? "Is playing" : "Not playing"*/}
       {/*<Button text="Play" onClick={() => setIsPlaying(!getIsPlaying)} />*/}
       <div className="form">
-        {/*        <div>
+        <form
+          style={{ justifyItems: "center" }}
+          onSubmit={onFormSubmit}
+          id="uploadform"
+        >
+          {/*        <div>
           <input
             type="checkbox"
             name="toc"
@@ -85,29 +112,53 @@ export function Upload() {
             uppladdade datan i detta projekt.{" "}
           </label>
         </div>*/}
-        <Flex align="center">
-          <Checkbox
-            id="checkbox"
-            onClick={handleDisabled}
-            style={{ display: "block" }}
-          />
-          <Box flex={1} paddingLeft={3}>
+          <Flex align="center">
+            <Checkbox
+              id="checkbox"
+              onClick={handleDisabled}
+              style={{ display: "block" }}
+            />
+            <Box flex={1} paddingLeft={3}>
+              <Text>
+                <label htmlFor="checkbox">
+                  Genom att klicka i denna knapp godkänner jag användandet av
+                  den uppladdade datan i detta projekt.
+                </label>
+              </Text>
+            </Box>
+          </Flex>
+          <Flex align="left">
             <Text>
-              <label htmlFor="checkbox">
-                Genom att klicka i denna knapp godkänner jag användandet av den
-                uppladdade datan i detta projekt.
+              <label htmlFor="meddelande" style={{ textAlign: "left" }}>
+                Lämna ett meddelande (frivilligt):
               </label>
             </Text>
-          </Box>
-        </Flex>
-        <input
-          type="file"
-          onChange={onFileChange}
-          /*onClick={() => }*/
-          accept=".xls, .xlsx, .csv"
-          id="upload"
-          disabled={disabled}
-        />
+          </Flex>
+          <Flex align="center">
+            <textarea
+              disabled={disabled}
+              name="text"
+              id=""
+              cols="30"
+              rows="4"
+              value={formMessage}
+              onChange={handleTextChange}
+            ></textarea>
+          </Flex>
+          <input
+            type="file"
+            onChange={onFileChange}
+            /*onClick={() => }*/
+            accept=".xls, .xlsx, .csv"
+            id="upload"
+            disabled={disabled}
+          />
+          <Flex align="center">
+            <button disabled={!hasFile} type="submit">
+              Dela
+            </button>
+          </Flex>
+        </form>
       </div>
       <Collapsible title="Instruktioner (klicka här!)">
         <div>

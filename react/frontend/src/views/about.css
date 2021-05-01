@@ -19,3 +19,8 @@ p:first-of-type {
 p {
   padding-bottom: 0.5em;
 }
+
+p a:visited,
+p a:link {
+  color: black;
+}

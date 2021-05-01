@@ -16,11 +16,14 @@ export function About() {
         <em>Radio Diabetes</em> är Karl Johannes Jondells examensprojekt i
         kandidatutbildningen elektroakustisk komposition på Kungliga
         Musikhögskolan. Vill du läsa den examenstext tillhörande projektet finns
-        den att ladda ned här. All kod för projektet finns tillgänglig
+        den att ladda ned här. All kod för projektet finns tillgänglig{" "}
         <a target="_blank" href="http://repo.radiodiabetes.eu">
           här
         </a>
         !
+      </p>
+      <p>
+        Skicka mejl <a href="mailto:info@radiodiabetes.eu">här</a>.
       </p>
     </div>
   );
