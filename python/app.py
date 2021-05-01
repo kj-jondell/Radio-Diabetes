@@ -33,7 +33,7 @@ def upload():
         output_folder = "messages"
 
         print("PRINT NEW CD")
-        print(os.getcwd())
+        #print(os.getcwd())
 
         print("time etc")
 #        if len(message)>0:
