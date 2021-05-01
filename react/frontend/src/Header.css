@@ -1,18 +1,24 @@
 .headerlink-title:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .headerlink-title {
-    color: white;
-    text-decoration: none;
-    padding: 0 2.5em;
-    font-size: 13pt;
+  color: white;
+  text-decoration: none;
+  font-size: 13pt;
 }
 
 .header {
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-    border-bottom: solid 1px white;
-    background-color: black;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  border-bottom: solid 1px white;
+  background-color: black;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 800px;
 }
