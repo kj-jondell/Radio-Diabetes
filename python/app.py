@@ -32,11 +32,6 @@ def upload():
         message = request.form['message'].strip()
         output_folder = "messages"
 
-        print("PRINT NEW CD")
-
-        if not os.path.exists(output_folder):
-            os.makedirs(output_folder)
-
         print(os.getcwd())
 
         print("time etc")
