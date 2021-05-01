@@ -33,7 +33,11 @@ def upload():
         output_folder = "messages"
 
         print("PRINT NEW CD")
-        #print(os.getcwd())
+
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
+
+        print(os.getcwd())
 
         print("time etc")
 #        if len(message)>0:
