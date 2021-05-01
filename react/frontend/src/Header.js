@@ -14,10 +14,12 @@ const HeaderLink = ({ page }) => {
 const Header = () => {
   return (
     <div className="header">
-      <HeaderLink page="om"></HeaderLink>
-      {/*<HeaderLink page="uppladdning"></HeaderLink>*/}
-      <HeaderLink page="uppladdning"></HeaderLink>
-      {/*<HeaderLink page="kontakt"></HeaderLink>*/}
+      <div className="nav-container">
+        <HeaderLink page="om"></HeaderLink>
+        {/*<HeaderLink page="uppladdning"></HeaderLink>*/}
+        <HeaderLink page="uppladdning"></HeaderLink>
+        <HeaderLink page="kontakt"></HeaderLink>
+      </div>
     </div>
   );
 };

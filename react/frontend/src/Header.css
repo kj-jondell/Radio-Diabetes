@@ -5,7 +5,6 @@
 .headerlink-title {
   color: white;
   text-decoration: none;
-  padding: 0 2.5em;
   font-size: 13pt;
 }
 
@@ -13,6 +12,13 @@
   display: flex;
   justify-content: center;
   padding: 20px;
-  /*border-bottom: solid 1px white;*/
+  border-bottom: solid 1px white;
   background-color: black;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 800px;
 }
