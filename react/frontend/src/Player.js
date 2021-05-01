@@ -9,13 +9,6 @@ export function Player() {
 
   const textPlaying = !getIsPlaying ? "lyssna till" : "pausa";
 
-  //const style = {
-  //  backgroundColor: color,
-  //  borderRadius: "5%",
-  //  width: 10,
-  //  height: 10,
-  //};
-
   return (
     <div className="playbar">
       {/*<Inline space={2}>*/}

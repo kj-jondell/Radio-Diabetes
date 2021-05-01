@@ -1,4 +1,4 @@
-import { Button, useToast } from "@sanity/ui";
+import { Button, Box, Checkbox, Flex, Text, useToast } from "@sanity/ui";
 import "./upload.css";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -69,7 +69,7 @@ export function Upload() {
       {/*getIsPlaying ? "Is playing" : "Not playing"*/}
       {/*<Button text="Play" onClick={() => setIsPlaying(!getIsPlaying)} />*/}
       <div className="form">
-        <div>
+        {/*        <div>
           <input
             type="checkbox"
             name="toc"
@@ -81,7 +81,18 @@ export function Upload() {
             Genom att klicka i denna knapp godkänner jag användandet av den
             uppladdade datan i detta projekt.{" "}
           </label>
-        </div>
+        </div>*/}
+        <Flex align="center">
+          <Checkbox id="checkbox" onClick={handleDisabled} style={{ display: "block" }} />
+          <Box flex={1} paddingLeft={3}>
+            <Text>
+              <label htmlFor="checkbox">
+                Genom att klicka i denna knapp godkänner jag användandet av den
+                uppladdade datan i detta projekt.
+              </label>
+            </Text>
+          </Box>
+        </Flex>
         <input
           type="file"
           onChange={onFileChange}
