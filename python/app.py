@@ -30,8 +30,9 @@ def upload():
         dataSender.send_file(f)
 
         message = request.form['message'].strip()
+        print(f"../../messages/{datetime.datetime.now().strftime('%Y%m%d-%H_%M_%S')}.txt")
         if len(message)>0:
-            with open(f"/home/ubuntu/diabetes-radio/messages/{datetime.datetime.now().strftime('%Y%m%d-%H_%M_%S')}.txt", "w") as message_file:
+            with open(f"../../messages/{datetime.datetime.now().strftime('%Y%m%d-%H_%M_%S')}.txt", "w") as message_file:
                 message_file.write(message)
 
         return {'uploadSuccess' : True}
