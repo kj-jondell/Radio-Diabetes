@@ -1,0 +1,18 @@
+div.form {
+  justify-content: center;
+  display: flexbox;
+  margin: auto;
+  width: 250px;
+}
+
+.form input,
+.form div {
+  padding-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+label {
+  font-size: 75%;
+}

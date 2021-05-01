@@ -1,0 +1,34 @@
+.collapsible {
+  cursor: pointer;
+  border: solid 1px #eaeaea;
+  padding: 15px;
+  background-color: #333;
+  color: #eee;
+}
+.content {
+  border-left: solid 1px #eaeaea;
+  border-right: solid 1px #eaeaea;
+  border-bottom: solid 1px #eaeaea;
+  border-radius: 0 0 5px 5px;
+  padding: 15px;
+  font-size: 90%;
+}
+
+div.instruktioner {
+  padding-top: 20px;
+  justify-content: center;
+  display: flexbox;
+  margin: auto;
+  width: 80%;
+  max-width: 900px;
+  min-width: 300px;
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 95%;
+  height: auto;
+  padding-top: 10px;
+}

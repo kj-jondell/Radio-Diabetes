@@ -7,7 +7,7 @@ import { usePlayContext } from "./context";
 export function Player() {
   const { getIsPlaying, setIsPlaying } = usePlayContext();
 
-  const textPlaying = !getIsPlaying ? "spela" : "pausa";
+  const textPlaying = !getIsPlaying ? "lyssna till" : "pausa";
 
   //const style = {
   //  backgroundColor: color,
@@ -22,15 +22,16 @@ export function Player() {
       {/*<Card padding={2} tone="critical" style={style} />*/}
       <Text
         style={{
-          color: "white",
+          color: "lightgrey",
           alignItems: "center",
           display: "flex",
           height: "100%",
           paddingRight: "10px",
+          fontSize: "80%",
         }}
         weight="semibold"
       >
-        Klicka här för att {textPlaying}:
+        Klicka här för att {textPlaying} radion:
       </Text>
       {/*</Inline>*/}
 
