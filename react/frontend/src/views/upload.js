@@ -90,7 +90,7 @@ export function Upload() {
           disabled={disabled}
         />
       </div>
-      <Collapsible title="Instruktioner">
+      <Collapsible title="Instruktioner (klicka här!)">
         <div>
           {" "}
           <p>

@@ -5,7 +5,7 @@ import { PauseIcon, PlayIcon } from "@sanity/icons";
 import { usePlayContext } from "./context";
 
 export function Player() {
-  const { getIsPlaying, setIsPlaying } = usePlayContext();
+  const { getIsPlaying, setIsPlaying, setAudioRef } = usePlayContext();
 
   const textPlaying = !getIsPlaying ? "lyssna till" : "pausa";
 
@@ -38,7 +38,10 @@ export function Player() {
       <Button
         icon={getIsPlaying ? PauseIcon : PlayIcon}
         onClick={() => setIsPlaying(!getIsPlaying)}
-      />
+      >
+        {" "}
+        <audio ref={(c) => setAudioRef(c)}></audio>
+      </Button>
     </div>
   );
 }
