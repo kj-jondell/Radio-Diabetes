@@ -32,9 +32,10 @@ def upload():
         message = request.form['message'].strip()
         output_folder = "messages"
 
-        if len(message)>0:
-            with open(f"{output_folder}/{datetime.datetime.now().strftime('%Y%m%d-%H_%M_%S')}.txt", "w") as message_file:
-                message_file.write(message)
+        print(os.getcwd())
+#        if len(message)>0:
+#            with open(f"{output_folder}/{datetime.datetime.now().strftime('%Y%m%d-%H_%M_%S')}.txt", "w") as message_file:
+#                message_file.write(message)
 
         return {'uploadSuccess' : True}
     except:
