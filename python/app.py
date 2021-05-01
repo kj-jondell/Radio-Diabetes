@@ -30,10 +30,12 @@ def upload():
         dataSender.send_file(f)
 
         message = request.form['message'].strip()
-        print(message)
-        #print(f"../../messages/{datetime.datetime.now().strftime('%Y%m%d-%H_%M_%S')}.txt")
+        output_folder = "messages"
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
+
         if len(message)>0:
-            with open(f"../../messages/{datetime.datetime.now().strftime('%Y%m%d-%H_%M_%S')}.txt", "w") as message_file:
+            with open(f"{output_folder}/{datetime.datetime.now().strftime('%Y%m%d-%H_%M_%S')}.txt", "w") as message_file:
                 message_file.write(message)
 
         return {'uploadSuccess' : True}
