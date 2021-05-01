@@ -66,8 +66,8 @@ function App() {
         <Route exact path="/om" component={About}></Route>
         {/* <Route exact path="/uppladdning" component={Uppladdning}></Route> */}
         <Route exact path="/uppladdning" component={Upload}></Route>
-        <Route exact path="/kontakt" component={Contact}></Route>
-        <Route exact path="/success" component={Success}></Route>
+        {/*<Route exact path="/kontakt" component={Contact}></Route>*/}
+        {/*<Route exact path="/success" component={Success}></Route>*/}
       </Router>
     </div>
   );
