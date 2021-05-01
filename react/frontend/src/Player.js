@@ -38,10 +38,8 @@ export function Player() {
       <Button
         icon={getIsPlaying ? PauseIcon : PlayIcon}
         onClick={() => setIsPlaying(!getIsPlaying)}
-      >
-        {" "}
-        <audio ref={(c) => setAudioRef(c)}></audio>
-      </Button>
+      />
+      <audio ref={(c) => setAudioRef(c)}></audio>
     </div>
   );
 }
