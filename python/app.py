@@ -37,7 +37,6 @@ def upload():
 
         return {'uploadSuccess' : True}
     except:
-
         return {'uploadSuccess' : False}
 
 if __name__ == '__main__':

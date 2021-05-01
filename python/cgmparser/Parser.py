@@ -4,6 +4,7 @@ from scipy.interpolate import BSpline
 from scipy import signal
 import numpy
 import csv
+import sys
 from dateutil import parser
 
 # FILE_OUTPUT = "" # TODO vilket filnamn...
@@ -46,11 +47,13 @@ class Parser():
     """ Tolkar excel data """
     def parse_data(self, user_file):
         #sheet = xlrd.open_workbook(file_contents=user_file).sheet_by_index(SHEET_NO)
+        workbook = xlrd.open_workbook(file_contents=user_file)
         for sheet_no in [1,0,2,3,4]:
             try:
-                sheet = xlrd.open_workbook(file_contents=user_file).sheet_by_index(sheet_no)
+                sheet = workbook.sheet_by_index(sheet_no)
                 break
             except IndexError:
+                print("ERROR!")
                 pass
 
         amt_data = sheet.nrows - ROW_OFFSET

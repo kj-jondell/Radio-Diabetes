@@ -52,8 +52,19 @@ export function Upload() {
 
   const onFileChange = (event) => {
     const fileToUpload = event.target.files[0];
-    setFile(fileToUpload);
-    setHasFile(true);
+    if (fileToUpload) {
+      if (
+        fileToUpload.name.split(".").pop() === "xls" ||
+        fileToUpload.name.split(".").pop() === "xlsx"
+      ) {
+        setFile(fileToUpload);
+        setHasFile(true);
+      } else {
+        setHasFile(false);
+      }
+    } else {
+      setHasFile(false);
+    }
   };
 
   useEffect(() => {
@@ -73,6 +84,12 @@ export function Upload() {
               setIsPlaying(true);
             }
           }
+        } else {
+          push({
+            title: "Hoppsan!",
+            description: "Något har blivit fel. Vänligen försök igen!",
+            status: "error",
+          });
         }
       })
       .catch(() => {
@@ -129,7 +146,14 @@ export function Upload() {
           </Flex>
           <Flex align="left">
             <Text>
-              <label htmlFor="meddelande" style={{ textAlign: "left" }}>
+              <label
+                htmlFor="meddelande"
+                style={
+                  disabled
+                    ? { textAlign: "left", color: "gray" }
+                    : { textAlign: "left" }
+                }
+              >
                 Lämna ett meddelande (frivilligt):
               </label>
             </Text>
@@ -154,7 +178,7 @@ export function Upload() {
             disabled={disabled}
           />
           <Flex align="center">
-            <button disabled={!hasFile} type="submit">
+            <button disabled={hasFile ? disabled : "disabled"} type="submit">
               Dela
             </button>
           </Flex>
