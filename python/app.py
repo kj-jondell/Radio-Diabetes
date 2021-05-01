@@ -31,17 +31,13 @@ def upload():
 
         message = request.form['message'].strip()
         if len(message)>0:
-            with open(f"../../messages/{datetime.datetime.now().strftime('%Y%m%d-%H_%M_%S')}.txt", "w") as message_file:
+            with open(f"/home/ubuntu/diabetes-radio/messages/{datetime.datetime.now().strftime('%Y%m%d-%H_%M_%S')}.txt", "w") as message_file:
                 message_file.write(message)
 
         return {'uploadSuccess' : True}
     except:
 
         return {'uploadSuccess' : False}
-
-#@app.route('/')
-#def index():
-#    return app.send_static_file('index.html')
 
 if __name__ == '__main__':
     app.run(debug = True)
