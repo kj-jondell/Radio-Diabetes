@@ -32,7 +32,10 @@ def upload():
         message = request.form['message'].strip()
         output_folder = "messages"
 
+        print("PRINT NEW CD")
         print(os.getcwd())
+
+        print("time etc")
 #        if len(message)>0:
 #            with open(f"{output_folder}/{datetime.datetime.now().strftime('%Y%m%d-%H_%M_%S')}.txt", "w") as message_file:
 #                message_file.write(message)
