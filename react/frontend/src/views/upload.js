@@ -1,3 +1,4 @@
+import { isMobile } from "react-device-detect";
 import { Button, Box, Checkbox, Flex, Text, useToast } from "@sanity/ui";
 import "./upload.css";
 import axios from "axios";
@@ -16,7 +17,7 @@ import image5 from "../images/nr_5.png";
 export function Upload() {
   const [file, setFile] = useState(null);
   const [success, setSuccess] = useState(false);
-  const { setIsPlaying, getIsPlaying } = usePlayContext();
+  const { setIsPlaying, getIsPlaying, setAudioRef } = usePlayContext();
   const { push } = useToast();
   const [disabled, setDisabled] = useState(true);
 
@@ -38,15 +39,17 @@ export function Upload() {
       .post("/api/uppladdning", formData)
       .then((response) => {
         if (response.data["uploadSuccess"]) {
-          console.log("HEY");
           setSuccess(true);
           push({
             title: "Tack!",
             description: "Ditt bidrag har mottagits!",
             status: "success",
           });
-          if (!getIsPlaying) {
-            setIsPlaying(true);
+
+          if (!isMobile) {
+            if (!getIsPlaying) {
+              setIsPlaying(true);
+            }
           }
         }
       })
@@ -58,9 +61,9 @@ export function Upload() {
         });
       });
     return false;
-  }, [file, getIsPlaying, push, setIsPlaying]);
+  }, [file, getIsPlaying, push, setIsPlaying, setAudioRef]);
 
-  if (success) {
+  if (success && !isMobile) {
     return <Redirect to="/" />;
   }
 
@@ -83,7 +86,11 @@ export function Upload() {
           </label>
         </div>*/}
         <Flex align="center">
-          <Checkbox id="checkbox" onClick={handleDisabled} style={{ display: "block" }} />
+          <Checkbox
+            id="checkbox"
+            onClick={handleDisabled}
+            style={{ display: "block" }}
+          />
           <Box flex={1} paddingLeft={3}>
             <Text>
               <label htmlFor="checkbox">
@@ -96,6 +103,7 @@ export function Upload() {
         <input
           type="file"
           onChange={onFileChange}
+          /*onClick={() => }*/
           accept=".xls, .xlsx, .csv"
           id="upload"
           disabled={disabled}
