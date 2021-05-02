@@ -99,6 +99,7 @@ export function Upload() {
           status: "error",
         });
       });
+    setFormData(null);
     return false;
   }, [formData, getIsPlaying, push, setIsPlaying, setAudioRef]);
 
