@@ -8,6 +8,11 @@ div.infotext {
   align-items: center;
 }
 
+.infotext img {
+  max-width: 420px;
+  height: auto;
+}
+
 /*p:first-of-type {
   text-align: justify;
   text-justify: auto;
@@ -17,7 +22,7 @@ div.infotext {
 }*/
 
 h2 {
-  padding-bottom: 1em;
+  /*padding-bottom: 1em;*/
   /*font-size: 145%;*/
   text-align: center;
 }

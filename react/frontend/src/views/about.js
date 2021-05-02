@@ -1,5 +1,6 @@
 import "./about.css";
 import React from "react";
+import squigglyLines from "../images/output.gif";
 
 export function About() {
   return (
@@ -7,6 +8,7 @@ export function About() {
       <h2>
         Välkommen till <em>Radio Diabetes</em>!
       </h2>
+      <img src={squigglyLines} alt="" srcset="" />
       <p>
         <em>Radio Diabetes</em> är mitt examensprojekt inom kandidatutbildningen{" "}
         <em>Elektroakustisk komposition</em> på <em>Kungliga Musikhögskolan</em>
