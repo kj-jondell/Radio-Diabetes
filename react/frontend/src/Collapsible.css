@@ -22,7 +22,7 @@
   height: 18px;
 }
 
-.expand-arrow {
+.expand-arrow--expanded {
   transform: rotate(180deg);
 }
 
