@@ -28,7 +28,7 @@ export function About() {
         !
       </p>
       <p>
-        Tveka inte om att skicka ett{" "}
+        Tveka inte att skicka ett{" "}
         <a href="mailto:info@radiodiabetes.eu">mejl</a> om du har någon fråga
         rörande projektet
       </p>
