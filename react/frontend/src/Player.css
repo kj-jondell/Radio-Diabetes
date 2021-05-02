@@ -1,11 +1,8 @@
 div.playbar {
   display: inline-flex;
-  color: green;
-  background-color: black;
+  background-color: #c45d1a;
   width: 100%;
   justify-content: center;
   padding: 10px;
-}
-
-p {
+  border-bottom: 1px solid #666;
 }

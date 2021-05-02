@@ -1,1 +1,7 @@
 .darkice.cfg
+__pycache__
+sample_data
+sclang_conf_radio.yaml
+sclang_conf.yaml
+sclang_conf_mac.yaml
+.DS_Store

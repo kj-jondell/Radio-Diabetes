@@ -16,3 +16,15 @@ div.form {
 label {
   font-size: 75%;
 }
+
+textarea {
+  width: 100%;
+}
+
+.instructions p:first-of-type {
+  text-align: justify;
+  text-justify: auto;
+  padding-bottom: 1em;
+  font-size: 110%;
+  text-align: center;
+}

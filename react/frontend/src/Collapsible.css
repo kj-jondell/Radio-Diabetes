@@ -1,6 +1,6 @@
 .collapsible {
   cursor: pointer;
-  border: solid 1px #eaeaea;
+  border: solid 1px darkgray;
   padding: 15px;
   background-color: #333;
   color: #eee;
@@ -8,12 +8,13 @@
   justify-content: space-between;
 }
 .content {
-  border-left: solid 1px #eaeaea;
-  border-right: solid 1px #eaeaea;
-  border-bottom: solid 1px #eaeaea;
+  border-left: solid 1px darkgray;
+  border-right: solid 1px darkgray;
+  border-bottom: solid 1px darkgray;
   border-radius: 0 0 5px 5px;
   padding: 15px;
   font-size: 90%;
+  background-color: rgb(233, 229, 224);
 }
 
 .expand-btn {

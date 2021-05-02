@@ -1,25 +1,22 @@
 import React from "react";
 import "./Player.css";
 import { Button, Card, Inline, Text } from "@sanity/ui";
-import { PauseIcon, PlayIcon } from "@sanity/icons";
+import { PauseIcon, PlayIcon, SpinnerIcon } from "@sanity/icons";
 import { usePlayContext } from "./context";
+import Loader from "react-loader-spinner";
 
 export function Player() {
-  const { getIsPlaying, setIsPlaying } = usePlayContext();
+  const {
+    getIsPlaying,
+    setIsPlaying,
+    setAudioRef,
+    getIsLoading,
+  } = usePlayContext();
 
   const textPlaying = !getIsPlaying ? "lyssna till" : "pausa";
 
-  //const style = {
-  //  backgroundColor: color,
-  //  borderRadius: "5%",
-  //  width: 10,
-  //  height: 10,
-  //};
-
   return (
     <div className="playbar">
-      {/*<Inline space={2}>*/}
-      {/*<Card padding={2} tone="critical" style={style} />*/}
       <Text
         style={{
           color: "lightgrey",
@@ -31,14 +28,29 @@ export function Player() {
         }}
         weight="semibold"
       >
-        Klicka här för att {textPlaying} radion:
+        {getIsLoading
+          ? "Radion laddar ..."
+          : `Klicka här för att ${textPlaying} radion:`}
       </Text>
-      {/*</Inline>*/}
 
       <Button
-        icon={getIsPlaying ? PauseIcon : PlayIcon}
-        onClick={() => setIsPlaying(!getIsPlaying)}
-      />
+        /*icon={getIsPlaying ? PauseIcon : PlayIcon}*/
+        icon={
+          getIsPlaying ? (
+            getIsLoading ? (
+              <Loader type="Oval" color="white" height={10} width={10} />
+            ) : (
+              PauseIcon
+            )
+          ) : (
+            PlayIcon
+          )
+        }
+        onClick={() => {
+          if (!getIsLoading) setIsPlaying(!getIsPlaying);
+        }}
+      ></Button>
+      <audio ref={(c) => setAudioRef(c)}></audio>
     </div>
   );
 }
