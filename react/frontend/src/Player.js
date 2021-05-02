@@ -17,8 +17,6 @@ export function Player() {
 
   return (
     <div className="playbar">
-      {/*<Inline space={2}>*/}
-      {/*<Card padding={2} tone="critical" style={style} />*/}
       <Text
         style={{
           color: "lightgrey",
@@ -34,7 +32,6 @@ export function Player() {
           ? "Radion laddar ..."
           : `Klicka här för att ${textPlaying} radion:`}
       </Text>
-      {/*</Inline>*/}
 
       <Button
         /*icon={getIsPlaying ? PauseIcon : PlayIcon}*/
@@ -52,10 +49,7 @@ export function Player() {
         onClick={() => {
           if (!getIsLoading) setIsPlaying(!getIsPlaying);
         }}
-      >
-        {/*<Loader type="Audio" color="#00BFFF" height={80} width={80} />*/}
-        {/*<SpinnerIcon style={{ rotate: "80" }}></SpinnerIcon>*/}
-      </Button>
+      ></Button>
       <audio ref={(c) => setAudioRef(c)}></audio>
     </div>
   );

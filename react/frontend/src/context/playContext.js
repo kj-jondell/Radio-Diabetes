@@ -38,6 +38,7 @@ export function PlayProvider({ children }) {
         if (isLoading) {
           setLoading(false);
         } else radio.pause();
+        radio.src = "";
       }
     }
   }, [isPlaying, radio]);
