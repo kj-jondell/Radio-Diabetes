@@ -11,6 +11,7 @@ div.infotext {
 .infotext img {
   max-width: 420px;
   height: auto;
+  margin-bottom: 2em;
 }
 
 /*p:first-of-type {

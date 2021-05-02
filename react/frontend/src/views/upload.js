@@ -138,8 +138,8 @@ export function Upload() {
             <Box flex={1} paddingLeft={3}>
               <Text>
                 <label htmlFor="checkbox">
-                  Genom att klicka i denna knapp godkänner jag användandet av
-                  den uppladdade datan i detta projekt.
+                  Genom att kryssa i denna ruta godkänner jag användandet av den
+                  uppladdade datan i detta projekt.
                 </label>
               </Text>
             </Box>

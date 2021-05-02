@@ -11,8 +11,7 @@ function App() {
     <div className="App">
       <Router>
         <Header />
-        <Route path="/:page" component={Player}></Route>
-        <Route exact path="/" component={Player}></Route>
+        <Player />
         <Route exact path="/" component={About}></Route>
         <Route exact path="/om" component={About}></Route>
         {/* <Route exact path="/uppladdning" component={Uppladdning}></Route> */}

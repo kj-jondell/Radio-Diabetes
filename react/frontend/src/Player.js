@@ -1,4 +1,3 @@
-import { isMobile } from "react-device-detect";
 import React from "react";
 import "./Player.css";
 import { Button, Grid, Card, Inline, Text } from "@sanity/ui";
@@ -34,7 +33,6 @@ export function Player() {
             ? "Radion laddar ..."
             : `Klicka här för att ${textPlaying} radion:`}
         </Text>
-
         <Button
           /*icon={getIsPlaying ? PauseIcon : PlayIcon}*/
           style={{
