@@ -11,7 +11,17 @@ div.infotext {
 .infotext img {
   max-width: 420px;
   height: auto;
+  margin-bottom: 5px;
+}
+
+.infotext figure {
   margin-bottom: 2em;
+}
+
+figcaption {
+  text-align: center;
+  font-size: 90%;
+  font-style: italic;
 }
 
 /*p:first-of-type {

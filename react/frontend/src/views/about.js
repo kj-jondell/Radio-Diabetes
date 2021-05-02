@@ -9,7 +9,10 @@ export function About() {
       <h2>
         Välkommen till <em>Radio Diabetes</em>!
       </h2>
-      <img src={squigglyLines} alt="" srcset="" />
+      <figure>
+        <img src={squigglyLines} alt="En visualisering av blodsockervärden." />
+        <figcaption>En visualisering av blodsockervärden.</figcaption>
+      </figure>
       <p>
         <em>Radio Diabetes</em> är mitt examensprojekt inom kandidatutbildningen{" "}
         <em>Elektroakustisk komposition</em> på <em>Kungliga Musikhögskolan</em>
