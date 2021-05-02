@@ -33,17 +33,14 @@ export function PlayProvider({ children }) {
         };
 
         setLoading(true);
-        radio.play(); // TODO sätta volym till 1 istället? eller synca på annat
-        // sätt...
+        radio.play();
       } else {
         if (isLoading) {
           setLoading(false);
-          radio.src = "";
-        } else radio.pause(); // TODO sätta volym till 0 istället? eller synca på annat
-        // sätt...
+        } else radio.pause();
       }
     }
-  }, [isPlaying]);
+  }, [isPlaying, radio]);
 
   return <PlayContext.Provider value={value}>{children} </PlayContext.Provider>;
 }
