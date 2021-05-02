@@ -185,7 +185,7 @@ export function Upload() {
         </form>
       </div>
       <Collapsible title="Instruktioner (klicka här!)">
-        <div>
+        <div className="instructions">
           {" "}
           <p>
             Följ instruktionerna nedan för att delta i radioströmmen.

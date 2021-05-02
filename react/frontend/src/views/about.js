@@ -4,9 +4,9 @@ import React from "react";
 export function About() {
   return (
     <div className="infotext">
-      <p>
-        Hej, och välkommen till <em>Radio Diabetes</em>!
-      </p>
+      <h1>
+        Välkommen till <em>Radio Diabetes</em>!
+      </h1>
       <p>
         <em>Radio Diabetes</em> är mitt examensprojekt inom kandidatutbildningen{" "}
         <em>Elektroakustisk komposition</em> på <em>Kungliga Musikhögskolan</em>

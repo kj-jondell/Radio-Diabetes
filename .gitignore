@@ -1,1 +1,4 @@
 .darkice.cfg
+__pycache__
+sample_data
+sclang_conf_radio.yaml
