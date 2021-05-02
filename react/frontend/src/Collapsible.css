@@ -4,6 +4,8 @@
   padding: 15px;
   background-color: #333;
   color: #eee;
+  display: flex;
+  justify-content: space-between;
 }
 .content {
   border-left: solid 1px darkgray;
@@ -13,6 +15,21 @@
   padding: 15px;
   font-size: 90%;
   background-color: rgb(233, 229, 224);
+}
+
+.expand-btn {
+  width: 18px;
+  height: 18px;
+}
+
+.expand-arrow--expanded {
+  transform: rotate(180deg);
+}
+
+.expand-btn svg path {
+  fill: none;
+  stroke: #eee;
+  stroke-width: 10;
 }
 
 div.instruktioner {

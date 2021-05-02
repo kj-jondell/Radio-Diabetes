@@ -16,7 +16,12 @@ class Collapsible extends React.Component {
     return (
       <div className="instruktioner">
         <div onClick={(e) => this.togglePanel(e)} className="collapsible">
-          {this.props.title}
+          <div className="instructions-title">{this.props.title}</div>
+          <div className="expand-btn">
+            <svg className={this.state.open ? "expand-arrow--expanded" : null} viewBox="0 0 100 100">
+                <path d="M5 15 L50 85 L95 15" />
+            </svg>
+          </div>
         </div>
         {this.state.open ? (
           <div className="content">{this.props.children}</div>
