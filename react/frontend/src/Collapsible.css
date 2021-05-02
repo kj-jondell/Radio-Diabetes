@@ -22,6 +22,10 @@
   height: 18px;
 }
 
+.expand-arrow {
+  transform: rotate(180deg);
+}
+
 .expand-btn svg path {
   fill: none;
   stroke: #eee;
