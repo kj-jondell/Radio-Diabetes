@@ -189,11 +189,11 @@ export function Upload() {
           {" "}
           <p>
             Följ instruktionerna nedan för att delta i radioströmmen.
-            <br />
+            {/*            <br />
             <div style={{ fontSize: "80%" }}>
               Notera att det endast går att ladda upp värden via en dator i
               nuläget.
-            </div>
+            </div>*/}
           </p>
           <p>
             1. Surfa in på{" "}

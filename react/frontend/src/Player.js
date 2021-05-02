@@ -1,6 +1,7 @@
+import { isMobile } from "react-device-detect";
 import React from "react";
 import "./Player.css";
-import { Button, Card, Inline, Text } from "@sanity/ui";
+import { Button, Grid, Card, Inline, Text } from "@sanity/ui";
 import { PauseIcon, PlayIcon, SpinnerIcon } from "@sanity/icons";
 import { usePlayContext } from "./context";
 import Loader from "react-loader-spinner";
@@ -17,40 +18,47 @@ export function Player() {
 
   return (
     <div className="playbar">
-      <Text
-        style={{
-          color: "lightgrey",
-          alignItems: "center",
-          display: "flex",
-          height: "100%",
-          paddingRight: "10px",
-          fontSize: "80%",
-        }}
-        weight="semibold"
-      >
-        {getIsLoading
-          ? "Radion laddar ..."
-          : `Klicka här för att ${textPlaying} radion:`}
-      </Text>
+      <Grid columns={[2]} gap={[1]}>
+        <Text
+          style={{
+            color: "lightgrey",
+            textAlign: "center",
+            paddingTop: "0.85em",
+            height: "100%",
+            width: "200px",
+            fontSize: "70%",
+          }}
+          weight="semibold"
+        >
+          {getIsLoading
+            ? "Radion laddar ..."
+            : `Klicka här för att ${textPlaying} radion:`}
+        </Text>
 
-      <Button
-        /*icon={getIsPlaying ? PauseIcon : PlayIcon}*/
-        icon={
-          getIsPlaying ? (
-            getIsLoading ? (
-              <Loader type="Oval" color="white" height={10} width={10} />
+        <Button
+          /*icon={getIsPlaying ? PauseIcon : PlayIcon}*/
+          style={{
+            width: "2em",
+            marginLeft: "3.5em",
+            height: "2em",
+          }}
+          icon={
+            getIsPlaying ? (
+              getIsLoading ? (
+                <Loader type="Oval" color="white" height={15} width={15} />
+              ) : (
+                PauseIcon
+              )
             ) : (
-              PauseIcon
+              PlayIcon
             )
-          ) : (
-            PlayIcon
-          )
-        }
-        onClick={() => {
-          if (!getIsLoading) setIsPlaying(!getIsPlaying);
-        }}
-      ></Button>
-      <audio ref={(c) => setAudioRef(c)}></audio>
+          }
+          onClick={() => {
+            if (!getIsLoading) setIsPlaying(!getIsPlaying);
+          }}
+        ></Button>
+        <audio ref={(c) => setAudioRef(c)}></audio>
+      </Grid>{" "}
     </div>
   );
 }

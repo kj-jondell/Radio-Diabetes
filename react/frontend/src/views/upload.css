@@ -13,6 +13,13 @@ div.form {
   align-items: center;
 }
 
+input[type="file"] {
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  text-align-last: center;
+}
+
 label {
   font-size: 75%;
 }
