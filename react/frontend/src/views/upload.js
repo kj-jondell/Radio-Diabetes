@@ -210,14 +210,17 @@ export function Upload() {
             <img src={image3} alt="" srcset="" />
           </p>
           <p>
-            4. Skriv in koden i fältet "Ange koden nedan", och klicka sedan på
-            "Exportera till Excel":
+            4. Skriv in koden i fältet "<em>Ange koden nedan</em>", och klicka
+            sedan på "<em>Exportera till Excel</em>". En ".xls"-fil med dina
+            värden kommer nu att sparas till din dator. Du hittar filen i din
+            Nedladdat-mapp.
             <img src={image4} alt="" srcset="" />
           </p>
           <p>
-            5. Till sist laddar du upp ".xls" filen genom att först klicka i
-            rutan där du godkänner att filen används, och sedan klicka på
-            knappen "<em>Välj fil</em>":
+            5. Till sist laddar du upp ".xls"-filen genom att först klicka i
+            rutan där du godkänner att filen används, och sedan klickar på
+            knappen "<em>Välj fil</em>". Du får gärna lämna ett meddelande om du
+            vill, detta kommer inte att publiceras och är anonymt.
             <img src={image5} alt="" srcset="" />
           </p>
         </div>

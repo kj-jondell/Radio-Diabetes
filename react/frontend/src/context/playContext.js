@@ -27,7 +27,7 @@ export function PlayProvider({ children }) {
       if (isPlaying) {
         radio.src = "https://stream.radiodiabetes.eu/";
 
-        radio.load();
+        //radio.load();
         radio.oncanplay = (e) => {
           setLoading(false);
         };
