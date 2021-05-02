@@ -1,15 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.f5f6955a.chunk.css",
-    "main.js": "/static/js/main.eb43d56a.chunk.js",
-    "main.js.map": "/static/js/main.eb43d56a.chunk.js.map",
+    "main.js": "/static/js/main.f086583b.chunk.js",
+    "main.js.map": "/static/js/main.f086583b.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.248907bc.js",
     "runtime-main.js.map": "/static/js/runtime-main.248907bc.js.map",
-    "static/js/2.bfcdfaf3.chunk.js": "/static/js/2.bfcdfaf3.chunk.js",
-    "static/js/2.bfcdfaf3.chunk.js.map": "/static/js/2.bfcdfaf3.chunk.js.map",
+    "static/js/2.019f6463.chunk.js": "/static/js/2.019f6463.chunk.js",
+    "static/js/2.019f6463.chunk.js.map": "/static/js/2.019f6463.chunk.js.map",
     "index.html": "/index.html",
     "static/css/main.f5f6955a.chunk.css.map": "/static/css/main.f5f6955a.chunk.css.map",
-    "static/js/2.bfcdfaf3.chunk.js.LICENSE.txt": "/static/js/2.bfcdfaf3.chunk.js.LICENSE.txt",
+    "static/js/2.019f6463.chunk.js.LICENSE.txt": "/static/js/2.019f6463.chunk.js.LICENSE.txt",
+    "static/media/kandidat.334647c3.pdf": "/static/media/kandidat.334647c3.pdf",
     "static/media/nr_1.cc494ec8.png": "/static/media/nr_1.cc494ec8.png",
     "static/media/nr_2.96970491.png": "/static/media/nr_2.96970491.png",
     "static/media/nr_3.9ff247e8.png": "/static/media/nr_3.9ff247e8.png",
@@ -19,8 +20,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.248907bc.js",
-    "static/js/2.bfcdfaf3.chunk.js",
+    "static/js/2.019f6463.chunk.js",
     "static/css/main.f5f6955a.chunk.css",
-    "static/js/main.eb43d56a.chunk.js"
+    "static/js/main.f086583b.chunk.js"
   ]
 }
