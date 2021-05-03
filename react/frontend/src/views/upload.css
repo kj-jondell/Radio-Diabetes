@@ -2,7 +2,9 @@ div.form {
   justify-content: center;
   display: flexbox;
   margin: auto;
-  width: 250px;
+  width: 80%;
+  max-width: 500px;
+  min-width: 300px;
 }
 
 .form input,

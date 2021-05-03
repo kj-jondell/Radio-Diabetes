@@ -14,11 +14,12 @@
   padding-top: 20px;
   padding-bottom: 5px;
   background-color: #c45d1a;
+  text-align: center;
 }
 
 .nav-container {
   display: flex;
   justify-content: space-around;
   width: 100%;
-  max-width: 350px;
+  max-width: 200px;
 }

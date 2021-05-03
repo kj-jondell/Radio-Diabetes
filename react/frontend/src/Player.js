@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Player.css";
 import { Button, Grid, Card, Inline, Text } from "@sanity/ui";
 import { PauseIcon, PlayIcon, SpinnerIcon } from "@sanity/icons";
@@ -13,31 +13,48 @@ export function Player() {
     getIsLoading,
   } = usePlayContext();
 
-  const textPlaying = !getIsPlaying ? "lyssna till" : "pausa";
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.keyCode === 32) {
+        if (!getIsLoading) setIsPlaying(!getIsPlaying);
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    // Don't forget to clean up
+    return function cleanup() {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [getIsPlaying, getIsLoading, setIsPlaying]);
+
+  const textPlaying = !getIsPlaying ? "Lyssna på" : "Stoppa";
 
   return (
     <div className="playbar">
-      <Grid columns={[2]} gap={[1]}>
+      <Grid columns={[2]} gap={[0]}>
         <Text
           style={{
             color: "lightgrey",
-            textAlign: "center",
+            textAlign: "left",
             paddingTop: "0.85em",
             height: "100%",
-            width: "200px",
+            width: "105px",
             fontSize: "70%",
           }}
           weight="semibold"
         >
-          {getIsLoading
-            ? "Radion laddar ..."
-            : `Klicka här för att ${textPlaying} radion:`}
+          {getIsLoading ? (
+            <div className="loading">Radion laddar </div>
+          ) : (
+            `${textPlaying} radion:`
+          )}
         </Text>
         <Button
           /*icon={getIsPlaying ? PauseIcon : PlayIcon}*/
           style={{
             width: "2em",
-            marginLeft: "3.5em",
+            margin: "0 auto",
             height: "2em",
           }}
           icon={

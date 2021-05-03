@@ -1,5 +1,6 @@
 import "./Header.css";
 
+import { Grid } from "@sanity/ui";
 import { Link } from "react-router-dom";
 
 const HeaderLink = ({ page }) => {
@@ -14,12 +15,16 @@ const HeaderLink = ({ page }) => {
 const Header = () => {
   return (
     <div className="header">
-      <div className="nav-container">
+      <Grid
+        columns={[2]}
+        gap={[0]}
+        style={{ width: "210px", maxWidth: "420px", textAlign: "left" }}
+      >
         <HeaderLink page="om"></HeaderLink>
         {/*<HeaderLink page="uppladdning"></HeaderLink>*/}
         <HeaderLink page="uppladdning"></HeaderLink>
         {/*<HeaderLink page="kontakt"></HeaderLink>*/}
-      </div>
+      </Grid>
     </div>
   );
 };

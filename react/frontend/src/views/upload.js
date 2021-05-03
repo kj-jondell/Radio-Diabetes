@@ -103,7 +103,7 @@ export function Upload() {
     return false;
   }, [formData, getIsPlaying, push, setIsPlaying, setAudioRef]);
 
-  if (success && !isMobile) {
+  if (success) {
     return <Redirect to="/" />;
   }
 

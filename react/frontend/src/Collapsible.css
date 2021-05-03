@@ -6,6 +6,8 @@
   color: #eee;
   display: flex;
   justify-content: space-between;
+  /*max-width: 600px;*/
+  margin: 0 auto;
 }
 .content {
   border-left: solid 1px darkgray;
@@ -15,6 +17,8 @@
   padding: 15px;
   font-size: 90%;
   background-color: rgb(233, 229, 224);
+  /*max-width: 600px;*/
+  margin: 0 auto;
 }
 
 .expand-btn {
