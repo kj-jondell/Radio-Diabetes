@@ -10,7 +10,7 @@ export function Home() {
       </h2>
       <figure>
         <img src={squigglyLines} alt="En visualisering av blodsockervärden." />
-        <figcaption>En visualisering av blodsockervärden.</figcaption>
+        <figcaption>Visualisering av blodsockervärden.</figcaption>
       </figure>
     </div>
   );
