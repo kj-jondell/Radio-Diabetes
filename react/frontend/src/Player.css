@@ -1,10 +1,9 @@
 div.playbar {
   display: inline-flex;
-  background-color: #c45d1a;
   width: 100%;
   justify-content: center;
+  background-color: #aa4909;
   padding: 10px;
-  border-bottom: 1px solid #666;
 }
 
 .loading:after {

@@ -32,15 +32,21 @@ export function Player() {
 
   return (
     <div className="playbar">
-      <Grid columns={[2]} gap={[0]}>
+      <Grid
+        columns={[2]}
+        gap={[1]}
+        style={{
+          width: "150px",
+        }}
+      >
         <Text
           style={{
             color: "lightgrey",
             textAlign: "left",
             paddingTop: "0.85em",
             height: "100%",
-            width: "105px",
             fontSize: "70%",
+            lineHeight: "100%",
           }}
           weight="semibold"
         >

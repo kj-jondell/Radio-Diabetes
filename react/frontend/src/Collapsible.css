@@ -41,8 +41,8 @@ div.instruktioner {
   justify-content: center;
   display: flexbox;
   margin: auto;
-  width: 80%;
-  max-width: 900px;
+  width: 63%;
+  max-width: 800px;
   min-width: 300px;
 }
 

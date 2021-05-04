@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Header from "./Header";
 import { Player } from "./Player";
-import { About, Upload } from "./views";
+import { About, Upload, Home, Contact } from "./views";
 
 function App() {
   return (
@@ -13,8 +13,9 @@ function App() {
       <Router>
         <Header />
         <Player />
-        <Route exact path="/" component={About}></Route>
+        <Route exact path="/" component={Home}></Route>
         <Route exact path="/om" component={About}></Route>
+        <Route exact path="/kontakt" component={Contact}></Route>
         {/* <Route exact path="/uppladdning" component={Uppladdning}></Route> */}
         <Route exact path="/uppladdning" component={Upload}></Route>
         {/*<Route exact path="/kontakt" component={Contact}></Route>*/}
