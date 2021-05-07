@@ -3,6 +3,8 @@ import React from "react";
 import { Button, Grid, Card, Inline, Text } from "@sanity/ui";
 import Thesis from "../documents/kandidat.pdf";
 import { DocumentIcon } from "@sanity/icons";
+import { FaGithub, FaSoundcloud } from "react-icons/fa";
+import { IconContext } from "react-icons";
 
 export function Contact() {
   return (
@@ -16,10 +18,32 @@ export function Contact() {
         <Text style={{ textAlign: "left" }}>
           <a href="mailto:info@radiodiabetes.eu">info@radiodiabetes.eu</a>
         </Text>
-        <Text style={{ textAlign: "left", fontWeight: "bold" }}>Källkod:</Text>
+
+        <Text
+          style={{ textAlign: "left", paddingTop: "0.5em", fontWeight: "bold" }}
+        >
+          Källkod:
+        </Text>
 
         <Text style={{ textAlign: "left" }}>
-          <a href="http://repo.radiodiabetes.eu">GitHub</a>
+          <Button /*icon={getIsPlaying ? PauseIcon : PlayIcon}*/
+            style={{
+              width: "2em",
+              height: "2em",
+            }}
+            icon={
+              <IconContext.Provider
+                value={{
+                  style: { fontSize: "20px" },
+                }}
+              >
+                <FaGithub />
+              </IconContext.Provider>
+            }
+            onClick={() => {
+              window.location.href = "http://repo.radiodiabetes.eu";
+            }}
+          ></Button>
         </Text>
 
         <Text

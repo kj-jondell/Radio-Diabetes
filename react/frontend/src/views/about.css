@@ -1,9 +1,10 @@
 div.infotext {
   display: flexbox;
   padding-top: 1em;
-  width: 63%;
-  max-width: 800px;
+  width: 80%;
+  max-width: 600px;
   min-width: 300px;
+
   margin: auto;
   align-items: center;
 }
