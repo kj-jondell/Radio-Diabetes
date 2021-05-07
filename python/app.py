@@ -19,7 +19,7 @@ import os, sys
 
 app = Flask(__name__)
 
-sg = sendgrid.SendGridAPIClient(api_key=app.config['SENDGRID_API_KEY'])
+sg = sendgrid.SendGridAPIClient(api_key=os.environ.get("SENDGRID_API_KEY", default="true"))
 from_email = Email("info@radiodiabetes.eu")
 to_email = Email("kj@jondell.com")
 subjekt = "Nytt bidrag!"
