@@ -3,7 +3,7 @@ div.form {
   display: flexbox;
   margin: auto;
   width: 80%;
-  max-width: 500px;
+  max-width: 600px;
   min-width: 300px;
 }
 
@@ -13,6 +13,10 @@ div.form {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.form div:only-of-type {
+  padding-top: 0px;
 }
 
 input[type="file"] {
@@ -36,4 +40,20 @@ textarea {
   padding-bottom: 1em;
   font-size: 110%;
   text-align: center;
+}
+
+h1{
+  padding-bottom: 30px;
+  border-bottom: 1px solid darkgray;
+}
+
+.instructions img{
+  padding-top: 10px;
+}
+
+form a:visited,
+form a:link {
+  /*color: black;*/
+  color: #0080ff;
+  text-decoration: underline;
 }

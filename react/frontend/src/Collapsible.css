@@ -42,7 +42,7 @@ div.instruktioner {
   display: flexbox;
   margin: auto;
   width: 80%;
-  max-width: 700px;
+  max-width: 600px;
   min-width: 300px;
 }
 
@@ -52,5 +52,4 @@ img {
   margin-right: auto;
   width: 95%;
   height: auto;
-  padding-top: 10px;
 }

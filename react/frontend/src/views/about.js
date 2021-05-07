@@ -5,21 +5,19 @@ import Thesis from "../documents/kandidat.pdf";
 export function About() {
   return (
     <div className="infotext">
-      <h1>Om</h1>
-      <p>
-        <em>Radio Diabetes</em> är mitt examensprojekt inom kandidatutbildningen{" "}
-        <em>Elektroakustisk komposition</em> på <em>Kungliga Musikhögskolan</em>
-        . Vill du läsa den examenstext tillhörande projektet finns den att ladda
-        ned{" "}
-        <a href={Thesis} target="_blank">
-          här
-        </a>
-        . All kod för projektet finns tillgänglig{" "}
-        <a target="_blank" href="http://repo.radiodiabetes.eu">
-          här
-        </a>
-        !
-      </p>
+      <h2>Om</h2>
+      <div className="breadText">
+        <h3 style={{ marginTop: "0" }}>Vad är detta?</h3>
+        <p>
+          <em>Radio Diabetes</em> är mitt examensprojekt inom
+          kandidatutbildningen <em>Elektroakustisk komposition</em> på{" "}
+          <em>Kungliga Musikhögskolan</em>. 
+          !<h3>Hur fungerar det?</h3>
+          <div id="gdpr">
+            !<h3>Dataanvändning och GDPR</h3>
+          </div>
+        </p>
+      </div>{" "}
     </div>
   );
 }

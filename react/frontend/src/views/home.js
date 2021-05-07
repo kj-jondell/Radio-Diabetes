@@ -8,9 +8,12 @@ export function Home() {
       <h2>
         Välkommen till <em>Radio Diabetes</em>!
       </h2>
-      <figure>
+      <figure className="figure">
         <img src={squigglyLines} alt="En visualisering av blodsockervärden." />
-        <figcaption>Visualisering av blodsockervärden.</figcaption>
+        <figcaption>Visualisering av blodsockervärden.{"\n"}</figcaption>
+        <figcaption>
+          OBS! Inte kopplad till musiken eller uppladdade värden.
+        </figcaption>
       </figure>
     </div>
   );

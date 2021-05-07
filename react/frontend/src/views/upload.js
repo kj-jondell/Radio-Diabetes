@@ -11,7 +11,8 @@ import {
 import "./upload.css";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect  } from "react-router-dom";
+import { HashLink  } from "react-router-hash-link";
 
 import { usePlayContext } from "../context";
 import Collapsible from "../Collapsible";
@@ -111,6 +112,9 @@ export function Upload() {
     <div>
       {/*getIsPlaying ? "Is playing" : "Not playing"*/}
       {/*<Button text="Play" onClick={() => setIsPlaying(!getIsPlaying)} />*/}
+      <div className="infotext">
+        <h2>Dela värden</h2>
+      </div>
       <div className="form">
         <form
           style={{ justifyItems: "center" }}
@@ -130,22 +134,22 @@ export function Upload() {
             uppladdade datan i detta projekt.{" "}
           </label>
         </div>*/}
-          <Flex align="center">
+          <Flex align="center" style={{paddingTop: "0", width: "70%", minWidth: "300px", margin:"0 auto", marginBottom: "15px"}}>
             <Checkbox
               id="checkbox"
               onClick={handleDisabled}
-              style={{ display: "block" }}
+              style={{ display: "block", paddingTop: "0"}}
             />
-            <Box flex={1} paddingLeft={3}>
-              <Text>
-                <label htmlFor="checkbox">
+            <Box style={{ paddingTop: "0"}} flex={1} paddingLeft={3}>
+              <Text >
+                <label htmlFor="checkbox" style={{fontStyle: "italic"}}>
                   Genom att kryssa i denna ruta godkänner jag användandet av den
-                  uppladdade datan i detta projekt.
+                  uppladdade datan i detta projekt. All data anonymiseras så fort den är mottagen och inga filer sparas på servern. Du kan läsa mer om dataanvändningen <HashLink to="/om#gdpr">här</HashLink>.
                 </label>
               </Text>
             </Box>
           </Flex>
-          <Flex align="left">
+          <Flex align="left" style={{fontWeight:"bold",width:"100%", paddingTop: "10px"}}>
             <Text>
               <label
                 htmlFor="meddelande"

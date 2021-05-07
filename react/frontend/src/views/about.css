@@ -1,6 +1,5 @@
 div.infotext {
   display: flexbox;
-  padding-top: 1em;
   width: 80%;
   max-width: 600px;
   min-width: 300px;
@@ -36,10 +35,20 @@ figcaption {
   text-align: center;
 }*/
 
+.breadText h2 {
+  font-weight: normal;
+  font-style: italic;
+  text-align: left;
+  padding-top: 0em;
+  padding-bottom: 0em;
+}
+
 h2 {
   /*padding-bottom: 1em;*/
-  /*font-size: 145%;*/
+  font-size: 165%;
   text-align: center;
+  padding-top: 0.4em;
+  padding-bottom: 0.4em;
 }
 
 p {
