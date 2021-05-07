@@ -21,7 +21,7 @@ app = Flask(__name__)
 
 sg = sendgrid.SendGridAPIClient(api_key=os.environ.get("SENDGRID_API_KEY", default="true"))
 from_email = Email("info@radiodiabetes.eu")
-to_email = Email("kj@jondell.com")
+to_email = To("kj@jondell.com")
 subjekt = "Nytt bidrag!"
 
 app.secret_key = os.urandom(42)
@@ -44,15 +44,10 @@ def upload():
                 message_file.write(message)
                 content = Content("text/plain", message)
                 mail = Mail(from_email, to_email, subjekt, content)
-                response = sg.client.mail.send(post(request_body=mail.get()))
-                print(response.status_code)
-                print(response.body)
-                print(response.headers)
-
+                response = sg.client.mail.send.post(request_body=mail.get())
         return {'uploadSuccess' : True}
-    except ConnectionRefusedError as err:
-        print(err)
     except:
+        print(sys.exc_info()[0])
         return {'uploadSuccess' : False}
 
 if __name__ == '__main__':
