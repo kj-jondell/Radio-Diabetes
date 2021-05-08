@@ -18,6 +18,8 @@ from pythonosc import udp_client
 
 import os, sys
 
+DEBUG = True
+
 app = Flask(__name__)
 
 sg = sendgrid.SendGridAPIClient(api_key=os.environ.get("SENDGRID_API_KEY", default="true"))
@@ -26,7 +28,7 @@ to_email = To("kj@jondell.com")
 subjekt = "Nytt bidrag!"
 
 app.secret_key = os.urandom(42)
-app.debug = True
+app.debug = DEBUG
 dataSender = DataSender()
 
 print("SETUP Complete...")
@@ -38,9 +40,10 @@ def upload():
 
         dataSender.send_file(f)
 
-        message = request.form['message'].strip() + "\n"
+        message = request.form['message'].strip()
 
         if len(message)>0:
+            message += "\n"
             with open(f"../../messages/{datetime.datetime.now().strftime('%Y%m%d-%H_%M_%S')}.txt", "w") as message_file:
                 message_file.write(message)
                 try:
@@ -55,5 +58,5 @@ def upload():
         return {'uploadSuccess' : False}
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(debug = DEBUG)
  
