@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 '''
 *****
-***** TODO: - Köa datan?
+***** TODO: - samla ihop meddelanden och skicka ett mejl per dag? för att minimera mejlutskick
+*****
 *****
 '''
 from flask import Flask, render_template, request, redirect, url_for
@@ -37,14 +38,17 @@ def upload():
 
         dataSender.send_file(f)
 
-        message = request.form['message'].strip()
+        message = request.form['message'].strip() + "\n"
 
         if len(message)>0:
             with open(f"../../messages/{datetime.datetime.now().strftime('%Y%m%d-%H_%M_%S')}.txt", "w") as message_file:
                 message_file.write(message)
-                content = Content("text/plain", message)
-                mail = Mail(from_email, to_email, subjekt, content)
-                response = sg.client.mail.send.post(request_body=mail.get())
+                try:
+                    content = Content("text/plain", message)
+                    mail = Mail(from_email, to_email, subjekt, content)
+                    response = sg.client.mail.send.post(request_body=mail.get())
+                except:
+                    print(sys.exc_info()[0])#do not crash if unable to send mail!
         return {'uploadSuccess' : True}
     except:
         print(sys.exc_info()[0])
