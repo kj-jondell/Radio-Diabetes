@@ -11,8 +11,8 @@ import {
 import "./upload.css";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Redirect  } from "react-router-dom";
-import { HashLink  } from "react-router-hash-link";
+import { Redirect } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 
 import { usePlayContext } from "../context";
 import Collapsible from "../Collapsible";
@@ -32,6 +32,7 @@ export function Upload() {
   const { push } = useToast();
   const [disabled, setDisabled] = useState(true);
   const [hasFile, setHasFile] = useState(false);
+  const [isSubmitted, setSubmitted] = useState(false);
 
   const handleTextChange = (event) => {
     setMessage(event.currentTarget.value);
@@ -70,39 +71,51 @@ export function Upload() {
 
   useEffect(() => {
     if (!formData) return;
-    axios
-      .post("/api/uppladdning", formData)
-      .then((response) => {
-        if (response.data["uploadSuccess"]) {
-          setSuccess(true);
-          push({
-            title: "Tack!",
-            description: "Ditt bidrag har mottagits!",
-            status: "success",
-          });
-          if (!isMobile) {
-            if (!getIsPlaying) {
-              setIsPlaying(true);
+    if (!isSubmitted) {
+      setSubmitted(true);
+      axios
+        .post("/api/uppladdning", formData)
+        .then((response) => {
+          if (response.data["uploadSuccess"]) {
+            setSuccess(true);
+            push({
+              title: "Tack!",
+              description: "Ditt bidrag har mottagits!",
+              status: "success",
+            });
+            if (!isMobile) {
+              if (!getIsPlaying) {
+                setIsPlaying(true);
+              }
             }
+          } else {
+            push({
+              title: "Hoppsan!",
+              description: "Något har blivit fel. Vänligen försök igen!",
+              status: "error",
+            });
           }
-        } else {
+        })
+        .catch(() => {
+          setSubmitted(false);
           push({
             title: "Hoppsan!",
             description: "Något har blivit fel. Vänligen försök igen!",
             status: "error",
           });
-        }
-      })
-      .catch(() => {
-        push({
-          title: "Hoppsan!",
-          description: "Något har blivit fel. Vänligen försök igen!",
-          status: "error",
         });
-      });
+    }
     setFormData(null);
     return false;
-  }, [formData, getIsPlaying, push, setIsPlaying, setAudioRef]);
+  }, [
+    formData,
+    getIsPlaying,
+    push,
+    setIsPlaying,
+    setAudioRef,
+    isSubmitted,
+    setSubmitted,
+  ]);
 
   if (success) {
     return <Redirect to="/" />;
@@ -134,22 +147,37 @@ export function Upload() {
             uppladdade datan i detta projekt.{" "}
           </label>
         </div>*/}
-          <Flex align="center" style={{paddingTop: "0", width: "70%", minWidth: "300px", margin:"0 auto", marginBottom: "15px"}}>
+          <Flex
+            align="center"
+            style={{
+              paddingTop: "0",
+              width: "70%",
+              minWidth: "300px",
+              margin: "0 auto",
+              marginBottom: "15px",
+            }}
+          >
             <Checkbox
               id="checkbox"
               onClick={handleDisabled}
-              style={{ display: "block", paddingTop: "0"}}
+              style={{ display: "block", paddingTop: "0" }}
             />
-            <Box style={{ paddingTop: "0"}} flex={1} paddingLeft={3}>
-              <Text >
-                <label htmlFor="checkbox" style={{fontStyle: "italic"}}>
+            <Box style={{ paddingTop: "0" }} flex={1} paddingLeft={3}>
+              <Text>
+                <label htmlFor="checkbox" style={{ fontStyle: "italic" }}>
                   Genom att kryssa i denna ruta godkänner jag användandet av den
-                  uppladdade datan i detta projekt. All data anonymiseras så fort den är mottagen och inga filer sparas på servern. Du kan läsa mer om dataanvändningen <HashLink to="/om#gdpr">här</HashLink>.
+                  uppladdade datan i detta projekt. All data anonymiseras så
+                  fort den är mottagen och inga filer sparas på servern. Du kan
+                  läsa mer om dataanvändningen{" "}
+                  <HashLink to="/om#gdpr">här</HashLink>.
                 </label>
               </Text>
             </Box>
           </Flex>
-          <Flex align="left" style={{fontWeight:"bold",width:"100%", paddingTop: "10px"}}>
+          <Flex
+            align="left"
+            style={{ fontWeight: "bold", width: "100%", paddingTop: "10px" }}
+          >
             <Text>
               <label
                 htmlFor="meddelande"
