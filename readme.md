@@ -1,6 +1,6 @@
 # Radio Diabetes
 
-Det här är koden till mitt examensprojekt, [tillgänglig här](https://radiodiabetes.eu)!
+Det här är koden till mitt examensprojekt, läs mer [här](https://urn.kb.se/resolve?urn=urn:nbn:se:kmh:diva-3987)!
 
 ## React
 
